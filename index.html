@@ -208,9 +208,21 @@ input[type="file"] { display: none; }
 .fs-close { background: rgba(255,255,255,0.05); border: none; width: 38px; height: 38px; border-radius: 50%; color: white; font-size: 16px; cursor: pointer; display:flex; align-items:center; justify-content:center; transition:0.3s;}
 .fs-content { flex: 1; position: relative; overflow-y: auto; background: #000; }
 iframe { width: 100%; height: 100%; border: none; background: white;}
+
+/* ================= SPLIT CODE VIEWER (SIDE BY SIDE) ================= */
 .code-viewer-container { padding: 20px; background: #0d1117; min-height: 100%; padding-bottom: 100px;}
-pre { background: #161b22; padding: 20px; border-radius: 16px; border: 1px solid #30363d; overflow-x: auto; font-family: 'Courier New', monospace; color: #c9d1d9; font-size: 14px; line-height: 1.6; white-space: pre-wrap;}
-.copy-floating-btn { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: white; color: #000; border: none; padding: 14px 28px; border-radius: 30px; font-size: 15px; font-weight: 800; cursor: pointer; box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3); display: flex; align-items: center; gap: 10px; z-index: 10; transition: 0.3s; }
+.code-split-container { display: flex; gap: 15px; height: 100%; min-height: 500px; }
+.code-box-wrap { flex: 1; display: flex; flex-direction: column; background: #161b22; border-radius: 16px; border: 1px solid #30363d; overflow: hidden; }
+.code-box-header { background: #21262d; padding: 12px 15px; font-size: 14px; font-weight: 700; color: #c9d1d9; border-bottom: 1px solid #30363d; display: flex; justify-content: space-between; align-items: center;}
+.code-box-wrap pre { margin: 0; border: none; border-radius: 0; flex: 1; padding: 15px; font-family: 'Courier New', monospace; color: #c9d1d9; font-size: 13.5px; line-height: 1.6; white-space: pre-wrap; overflow-x: auto; }
+.copy-btn-small { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600; transition: 0.3s; display: flex; align-items: center; gap: 6px;}
+.copy-btn-small:hover { background: var(--primary); border-color: var(--primary); }
+
+/* Mobile view ke liye upar-neeche stack karna */
+@media (max-width: 768px) {
+    .code-split-container { flex-direction: column; }
+    .code-box-wrap { min-height: 300px; }
+}
 </style>
 </head>
 
@@ -257,7 +269,6 @@ pre { background: #161b22; padding: 20px; border-radius: 16px; border: 1px solid
         <div class="item-count-badge"><b id="totalStoreItems" style="color:white;">0</b> Items</div>
       </div>
       
-      <!-- SEARCH BAR -->
       <div class="search-box">
           <i class="fa-solid fa-magnifying-glass"></i>
           <input type="text" id="searchInput" placeholder="Search projects by name..." oninput="filterStore()">
@@ -293,8 +304,14 @@ pre { background: #161b22; padding: 20px; border-radius: 16px; border: 1px solid
     <textarea id="text" placeholder="What's on your mind?"></textarea>
     
     <input type="text" id="codeTitle" placeholder="Project Title (e.g., UI Dashboard)" style="display:none;">
+    
+    <!-- User Code Input -->
+    <textarea id="codeSource" placeholder="Paste USER HTML/CSS/JS Source Code here..." style="display:none; min-height:120px; font-family:monospace; border-left: 3px solid #8b5cf6;"></textarea>
+    
+    <!-- Admin Code Input -->
+    <textarea id="adminCodeSource" placeholder="Paste ADMIN Source Code here (Optional)..." style="display:none; min-height:120px; font-family:monospace; border-left: 3px solid #ec4899;"></textarea>
+    
     <textarea id="codeDesc" placeholder="Describe your project's features..." style="display:none; min-height:80px;"></textarea>
-    <textarea id="codeSource" placeholder="Paste full HTML/CSS/JS source code here..." style="display:none; min-height:150px; font-family:monospace;"></textarea>
 
     <label class="file-upload-label" for="photo" id="photoLabel">
         <i class="fa-solid fa-cloud-arrow-up" style="font-size:24px; color:var(--primary)"></i> 
@@ -367,8 +384,24 @@ pre { background: #161b22; padding: 20px; border-radius: 16px; border: 1px solid
     </div>
     <div class="fs-content">
         <div class="code-viewer-container">
-            <pre><code id="codeBlock"></code></pre>
-            <button class="copy-floating-btn" onclick="copyCurrentCode()"><i class="fa-solid fa-copy"></i> Copy Code</button>
+            <div class="code-split-container">
+                <!-- User Code Box -->
+                <div class="code-box-wrap">
+                    <div class="code-box-header">
+                        <span><i class="fa-solid fa-file-code" style="color:#8b5cf6;"></i> User Code</span>
+                        <button class="copy-btn-small" onclick="copySpecificCode('user')"><i class="fa-solid fa-copy"></i> Copy</button>
+                    </div>
+                    <pre><code id="userCodeBlock"></code></pre>
+                </div>
+                <!-- Admin Code Box -->
+                <div class="code-box-wrap">
+                    <div class="code-box-header">
+                        <span><i class="fa-solid fa-user-shield" style="color:#ec4899;"></i> Admin Code</span>
+                        <button class="copy-btn-small" onclick="copySpecificCode('admin')"><i class="fa-solid fa-copy"></i> Copy</button>
+                    </div>
+                    <pre><code id="adminCodeBlock"></code></pre>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -395,13 +428,13 @@ let currentUser = null;
 let userProfile = null;
 let allUsers = [];
 let allComments = [];
-let currentActiveCode = "";
+let activeUserCode = "";
+let activeAdminCode = "";
 
 window.addEventListener('load', async () => {
     try {
         const { data: { session } } = await sb.auth.getSession();
         
-        // 1. Agar pehle se logged in hai toh direct open karo
         if(session) { 
             currentUser = session.user; 
             document.getElementById('loadingOverlay').style.display = 'none';
@@ -409,12 +442,10 @@ window.addEventListener('load', async () => {
             return;
         } 
         
-        // 2. Agar Telegram SDK se open hua hai (Auto-Login)
         if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
             const tgUser = window.Telegram.WebApp.initDataUnsafe.user;
             await processTelegramLogin(tgUser.username || `user${tgUser.id}`, tgUser.first_name, tgUser.photo_url);
         } else {
-            // 3. Agar normal browser hai (Show Manual Input)
             document.getElementById('loadingOverlay').style.display = 'none';
             document.getElementById('authOverlay').style.display = 'flex';
         }
@@ -508,6 +539,7 @@ function toggleUploadType() {
     document.getElementById('codeTitle').style.display = isCode ? 'block' : 'none';
     document.getElementById('codeDesc').style.display = isCode ? 'block' : 'none';
     document.getElementById('codeSource').style.display = isCode ? 'block' : 'none';
+    document.getElementById('adminCodeSource').style.display = isCode ? 'block' : 'none';
     document.getElementById('photoLabel').querySelector('span').innerText = isCode ? 'Upload App Thumbnail' : 'Upload Image';
 }
 
@@ -537,10 +569,15 @@ async function uploadContent() {
         if(type === "code") {
             const title = document.getElementById('codeTitle').value.trim();
             const desc = document.getElementById('codeDesc').value.trim();
-            const source = document.getElementById('codeSource').value.trim();
-            if(!title || !source || !b64Image) throw new Error("Title, Source Code, and Thumbnail required!");
+            const userSource = document.getElementById('codeSource').value.trim();
+            const adminSource = document.getElementById('adminCodeSource').value.trim() || "No admin code provided.";
+            
+            if(!title || !userSource || !b64Image) throw new Error("Title, User Source Code, and Thumbnail required!");
+            
             const combinedText = title + "|||" + desc;
-            await sb.from('user_ads').insert({ uid: currentUser.id, text: combinedText, ad_code: source, link: b64Image, views_received: 0 });
+            const combinedSource = userSource + "|||ADMIN_CODE|||" + adminSource;
+            
+            await sb.from('user_ads').insert({ uid: currentUser.id, text: combinedText, ad_code: combinedSource, link: b64Image, views_received: 0 });
             showToast("Project Published Successfully!", true);
             await fetchCodeStore();
             openPage('home', document.querySelectorAll('.nav-item')[0]);
@@ -556,7 +593,7 @@ async function uploadContent() {
             showToast("Post Live!"); 
             openPage('info', document.querySelectorAll('.nav-item')[1]);
         }
-        document.getElementById('text').value = ""; document.getElementById('codeTitle').value = ""; document.getElementById('codeDesc').value = ""; document.getElementById('codeSource').value = ""; document.getElementById('photo').value = ""; document.getElementById('fileName').innerText = "Upload Image";
+        document.getElementById('text').value = ""; document.getElementById('codeTitle').value = ""; document.getElementById('codeDesc').value = ""; document.getElementById('codeSource').value = ""; document.getElementById('adminCodeSource').value = ""; document.getElementById('photo').value = ""; document.getElementById('fileName').innerText = "Upload Image";
         fetchUserStats();
     } catch(e) { showToast(e.message); }
     btn.innerHTML = 'Publish Now <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false;
@@ -636,19 +673,39 @@ function handleStoreAdSuccess(appId) {
     fetchCodeStore(); 
 }
 
-// ================= MODALS & COPY FIX =================
-function openStorePreview(appId) { const rawCode = window.loadedCodes[appId] || "<h1>No code</h1>"; const iframe = document.getElementById('previewFrame'); iframe.srcdoc = rawCode; document.getElementById('previewModal').style.display = 'flex'; }
-function openStoreCode(appId) { const rawCode = window.loadedCodes[appId] || ""; document.getElementById('codeBlock').innerHTML = rawCode.replace(/</g, "&lt;").replace(/>/g, "&gt;"); currentActiveCode = rawCode; document.getElementById('codeModal').style.display = 'flex'; }
+// ================= SPLIT MODALS & COPY FIX =================
+function openStorePreview(appId) { 
+    const rawCode = window.loadedCodes[appId] || ""; 
+    let parts = rawCode.split("|||ADMIN_CODE|||");
+    const userCodeOnly = parts[0] || "<h1>No code</h1>";
+    const iframe = document.getElementById('previewFrame'); 
+    iframe.srcdoc = userCodeOnly; 
+    document.getElementById('previewModal').style.display = 'flex'; 
+}
+
+function openStoreCode(appId) { 
+    const rawCode = window.loadedCodes[appId] || ""; 
+    let parts = rawCode.split("|||ADMIN_CODE|||");
+    activeUserCode = parts[0] || "No user code available.";
+    activeAdminCode = parts[1] || "No admin code provided.";
+
+    document.getElementById('userCodeBlock').innerHTML = activeUserCode.replace(/</g, "&lt;").replace(/>/g, "&gt;"); 
+    document.getElementById('adminCodeBlock').innerHTML = activeAdminCode.replace(/</g, "&lt;").replace(/>/g, "&gt;"); 
+    document.getElementById('codeModal').style.display = 'flex'; 
+}
+
 function closeStoreModal(modalId) { document.getElementById(modalId).style.display = 'none'; if(modalId === 'previewModal') { document.getElementById('previewFrame').srcdoc = ""; } }
 
-function copyCurrentCode() { 
-    if (!currentActiveCode) return; 
+function copySpecificCode(type) { 
+    const codeToCopy = type === 'user' ? activeUserCode : activeAdminCode;
+    if (!codeToCopy) return; 
+
     if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(currentActiveCode).then(() => showToast("✅ Copied to Clipboard!", true)).catch(() => showToast("Copy failed!", false));
+        navigator.clipboard.writeText(codeToCopy).then(() => showToast(`✅ ${type === 'user' ? 'User' : 'Admin'} Code Copied!`, true)).catch(() => showToast("Copy failed!", false));
     } else {
-        const textArea = document.createElement("textarea"); textArea.value = currentActiveCode; textArea.style.position = "fixed"; textArea.style.left = "-9999px"; document.body.appendChild(textArea);
+        const textArea = document.createElement("textarea"); textArea.value = codeToCopy; textArea.style.position = "fixed"; textArea.style.left = "-9999px"; document.body.appendChild(textArea);
         textArea.focus(); textArea.select();
-        try { document.execCommand('copy'); showToast("✅ Copied to Clipboard!", true); } catch (err) { showToast("Copy failed!", false); }
+        try { document.execCommand('copy'); showToast(`✅ ${type === 'user' ? 'User' : 'Admin'} Code Copied!`, true); } catch (err) { showToast("Copy failed!", false); }
         textArea.remove();
     }
 }
