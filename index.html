@@ -10,7 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <!-- ========================================== -->
-<!-- 🛑 TELEGRAM WEB APP SDK (AUTO LOGIN KE LIYE) 🛑 -->
+<!-- 🛑 TELEGRAM WEB APP SDK (AUTO LOGIN) 🛑 -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <!-- ========================================== -->
 
@@ -44,6 +44,8 @@ if (typeof show_10364706 !== "function") {
     --primary-hover: #db2777; 
     --accent: #8b5cf6;
     --glass: rgba(20, 30, 51, 0.7); 
+    --cody-grad: linear-gradient(135deg, #0ea5e9, #2563eb); /* Tech Blue Gradient */
+    --cody-glow: rgba(14, 165, 233, 0.5);
 }
 body { background: radial-gradient(circle at top left, #1a1525 0%, var(--bg) 100%); color: var(--text); padding-bottom: 100px; padding-top: 70px; min-height: 100vh; overflow-x: hidden; }
 
@@ -64,12 +66,28 @@ body { background: radial-gradient(circle at top left, #1a1525 0%, var(--bg) 100
 .spinner { width: 50px; height: 50px; border: 5px solid rgba(255,255,255,0.1); border-top-color: #3b82f6; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* ================= PROFESSIONAL CODY LOGO CSS ================= */
+.cody-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    background: var(--cody-grad);
+    border-radius: 6px;
+    color: white;
+    font-size: 10px;
+    font-weight: 900;
+    box-shadow: 0 0 12px var(--cody-glow);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
 /* ================= TOP BAR ================= */
 .topbar { position: fixed; top: 0; left: 0; width: 100%; padding: 15px 20px; background: var(--glass); backdrop-filter: blur(15px); border-bottom: 1px solid var(--border); z-index: 100; display: flex; justify-content: space-between; align-items: center; }
-.topbar .title { font-size: 20px; font-weight: 800; background: linear-gradient(45deg, #ec4899, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
-.top-stats span { font-size: 13px; font-weight: 600; background: rgba(139, 92, 246, 0.1); padding: 6px 12px; border-radius: 20px; color: var(--accent); border: 1px solid rgba(139, 92, 246, 0.2);}
+.topbar .title { font-size: 20px; font-weight: 800; background: linear-gradient(45deg, #0ea5e9, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+.top-stats span { font-size: 15px; font-weight: 800; background: rgba(14, 165, 233, 0.1); padding: 6px 14px; border-radius: 30px; color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.3); box-shadow: 0 0 15px rgba(14, 165, 233, 0.1); display: flex; align-items: center; gap: 8px; transition: 0.3s;}
 
-/* ================= FLOATING PROFESSIONAL BOTTOM NAV ================= */
+/* ================= FLOATING BOTTOM NAV ================= */
 nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 450px; height: 70px; background: rgba(20, 30, 51, 0.85); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 35px; display: flex; justify-content: space-around; align-items: center; z-index: 100; box-shadow: 0 15px 35px rgba(0,0,0,0.5); padding: 0 10px; }
 .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 11px; font-weight: 600; color: var(--muted); cursor: pointer; transition: all 0.3s ease; position: relative; height: 100%; }
 .nav-item i { font-size: 20px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
@@ -92,7 +110,7 @@ nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); wid
 
 .card, .tweet-card { background: linear-gradient(145deg, var(--card), #0f1524); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); }
 
-/* ================= CODE STORE UI (WITH SEARCH) ================= */
+/* ================= CODE STORE UI ================= */
 .store-header-wrap { display: flex; flex-direction: column; margin-bottom: 25px; }
 
 .search-box { display: flex; align-items: center; gap: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 16px; padding: 0 16px; height: 50px; transition: 0.3s; box-shadow: inset 0 2px 5px rgba(0,0,0,0.2); }
@@ -102,7 +120,7 @@ nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); wid
 
 .code-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 30px; }
 .app-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.3); transition: all 0.3s ease; display: flex; flex-direction: column;}
-.app-card:hover { transform: translateY(-5px); border-color: rgba(236, 72, 153, 0.4); box-shadow: 0 15px 35px rgba(236, 72, 153, 0.15); }
+.app-card:hover { transform: translateY(-5px); border-color: rgba(14, 165, 233, 0.4); box-shadow: 0 15px 35px rgba(14, 165, 233, 0.15); }
 .app-img-box { width: 100%; background: #0b1120; position: relative; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: center; overflow: hidden; min-height: 160px; padding: 10px 0;}
 .app-img-box img { width: 100%; height: auto; max-height: 220px; object-fit: contain; transition: 0.3s; display: block;}
 .app-card:hover .app-img-box img { transform: scale(1.05); }
@@ -122,15 +140,16 @@ nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); wid
 .progress-fill { height: 100%; background: linear-gradient(90deg, #8b5cf6, #ec4899); width: 0%; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 10px;}
 
 .watch-ad-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 12px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; }
-.watch-ad-btn:hover { border-color: var(--primary); background: rgba(236, 72, 153, 0.15); box-shadow: 0 0 15px rgba(236,72,153,0.2);}
+.watch-ad-btn:hover { border-color: #0ea5e9; background: rgba(14, 165, 233, 0.15); box-shadow: 0 0 15px rgba(14,165,233,0.2);}
 
-.action-row { display: flex; gap: 10px; width: 100%; margin-top: auto; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05);}
-.btn-preview { flex: 1; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); color: #a78bfa; height: 42px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.2s; }
-.btn-preview:hover { background: rgba(139, 92, 246, 0.2); border-color: #a78bfa; }
-.btn-code { flex: 1; background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none; color: white; height: 42px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);}
+/* PLAY & EARN CODY BUTTON */
+.action-row { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: auto; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05);}
+.btn-preview { width: 100%; background: var(--cody-grad); border: 1px solid rgba(255,255,255,0.2); color: white; height: 44px; border-radius: 12px; font-size: 14px; font-weight: 800; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px var(--cody-glow); display: flex; justify-content: center; align-items: center; gap: 8px;}
+.btn-preview:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(14, 165, 233, 0.6); }
+.btn-code { width: 100%; background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none; color: white; height: 42px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);}
 .btn-code:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6); }
 
-/* ================= POST FEED & PROFESSIONAL COMMENTS ================= */
+/* ================= POST FEED ================= */
 .avatar, .tweet-avatar { width: 46px; height: 46px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; color: var(--muted); border: 2px solid rgba(255,255,255,0.05); }
 .avatar img, .tweet-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .tweet-card { display: flex; gap: 15px; }
@@ -148,33 +167,26 @@ nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); wid
 .t-action-btn.like:hover, .t-action-btn.liked { color: #f43f5e; }
 .t-action-btn.liked i { color: #f43f5e; text-shadow: 0 0 10px rgba(244,63,94,0.5);}
 
-.comment-box { margin-top: 15px; display: none; background: rgba(0,0,0,0.2); border-radius: 16px; padding: 16px; border: 1px solid rgba(255,255,255,0.03); }
-.comment-input-wrapper { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; background: rgba(255,255,255,0.03); padding: 8px 12px; border-radius: 30px; border: 1px solid var(--border); transition: 0.3s;}
-.comment-input-wrapper:focus-within { border-color: var(--accent); background: rgba(255,255,255,0.05);}
-.comment-input { flex: 1; background: transparent !important; border: none !important; color: white !important; font-size: 14px; outline: none; padding: 5px !important; margin:0 !important; }
-.comment-submit-btn { background: var(--accent); color: white; border: none; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s;}
-
-.comment-list { display: flex; flex-direction: column; gap: 15px; }
-.comment { display: flex; gap: 12px; align-items: flex-start; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.03); }
-.comment:last-child { border-bottom: none; padding-bottom: 0; }
-.comment .tweet-avatar { width: 32px; height: 32px; }
-.comment-content { background: rgba(255,255,255,0.03); padding: 12px 14px; border-radius: 0 16px 16px 16px; flex: 1; display: flex; flex-direction: column;}
-.comment-text-wrap { font-size: 13.5px; color: #cbd5e1; line-height: 1.5; }
-.comment-text-wrap b { color: white; font-weight: 700; display: block; margin-bottom: 4px; font-size: 13px;}
-.reply-btn { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: var(--accent); margin-top: 8px; cursor: pointer; font-weight: 700; background: rgba(139, 92, 246, 0.1); padding: 5px 12px; border-radius: 12px; transition: 0.2s; width: fit-content;}
-
-/* ================= PROFILE UI ================= */
+/* ================= PROFILE UI & CODY WALLET ================= */
 .profile-header { background: var(--card); border: 1px solid var(--border); border-radius: 24px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
-.profile-cover { height: 140px; background: linear-gradient(135deg, #312e81, #831843); position: relative; overflow: hidden; }
+.profile-cover { height: 140px; background: linear-gradient(135deg, #0f172a, #1e293b); position: relative; overflow: hidden; border-bottom: 1px solid rgba(255,255,255,0.05);}
 .profile-info-wrap { display: flex; flex-direction: column; align-items: center; padding: 0 20px 25px 20px; position: relative; margin-top: -60px; }
 .profile-avatar-large { width: 120px; height: 120px; border-radius: 50%; border: 6px solid var(--card); background: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 40px; color: var(--muted); overflow: hidden; z-index: 5; box-shadow: 0 10px 25px rgba(0,0,0,0.5); margin-bottom: 15px; }
 .profile-avatar-large img { width: 100%; height: 100%; object-fit: cover;}
 .profile-name-text { font-size: 26px; font-weight: 800; text-align: center; color: white; letter-spacing: -0.5px;}
 .profile-handle-text { background: linear-gradient(45deg, #3b82f6, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 15px; font-weight: 700; text-align: center; margin-bottom: 10px;}
 .profile-bio { margin-top: 10px; font-size: 14px; color: #cbd5e1; line-height: 1.6; text-align: center; max-width: 90%; }
-.profile-action-btns { display: flex; gap: 15px; width: 100%; justify-content: center; margin-top: 25px; margin-bottom: 25px; }
+.profile-action-btns { display: flex; gap: 15px; width: 100%; justify-content: center; margin-top: 25px; margin-bottom: 20px; }
 .edit-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 12px 0; border-radius: 30px; font-size: 14px; font-weight: 700; cursor: pointer; transition: 0.3s; flex: 1; max-width: 150px; }
 .logout-btn { background: rgba(248, 113, 113, 0.1); color: #f87171; border: 1px solid rgba(248, 113, 113, 0.2); padding: 12px 0; border-radius: 30px; font-size: 14px; font-weight: 700; cursor: pointer; flex: 1; max-width: 150px; transition: 0.3s;}
+
+/* Cody Wallet Card */
+.wallet-card { width: 100%; background: linear-gradient(180deg, rgba(14,165,233,0.05) 0%, rgba(0,0,0,0.3) 100%); border: 1px solid rgba(14,165,233,0.2); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 20px; position: relative; overflow: hidden; box-shadow: inset 0 0 20px rgba(14,165,233,0.05);}
+.wallet-title { font-size: 14px; font-weight: 700; color: #94a3b8; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; letter-spacing: 1px;}
+.wallet-balance { font-size: 38px; font-weight: 800; color: white; margin-bottom: 5px; text-shadow: 0 0 20px rgba(14,165,233,0.5);}
+.wallet-price { font-size: 14px; font-weight: 600; color: #38bdf8; margin-bottom: 15px; background: rgba(14,165,233,0.1); display: inline-block; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(14,165,233,0.2);}
+.wallet-warning { background: rgba(245, 158, 11, 0.1); border: 1px dashed rgba(245, 158, 11, 0.3); color: #fcd34d; font-size: 12px; font-weight: 600; padding: 10px; border-radius: 12px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; text-align: left; line-height: 1.4;}
+.withdraw-btn { width: 100%; background: #1e293b; color: #64748b; border: 1px solid #334155; padding: 14px; border-radius: 14px; font-size: 14px; font-weight: 800; cursor: not-allowed; display: flex; justify-content: center; align-items: center; gap: 8px; transition: 0.3s;}
 
 .profile-stats { width: 100%; display: grid; grid-template-columns: repeat(3, 1fr); background: rgba(0,0,0,0.3); padding: 20px 15px; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
 .stat-box { display: flex; flex-direction: column; gap: 6px; border-right: 1px solid rgba(255,255,255,0.05); }
@@ -185,7 +197,6 @@ nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); wid
 /* ================= GENERAL INPUTS & BUTTONS ================= */
 .btn-primary { background: linear-gradient(135deg, #3b82f6, var(--accent)); color: white; border: none; border-radius: 14px; height: 48px; padding: 0 20px; font-weight: 700; font-size: 15px; cursor: pointer; transition: 0.3s; width: 100%; display: flex; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);}
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(59, 130, 246, 0.5); }
-.btn-primary:disabled { background: #334155 !important; cursor: not-allowed; color: #94a3b8 !important; box-shadow: none; transform: none;}
 input, textarea, select { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 14px; padding: 15px 18px; color: white; margin-bottom: 15px; font-size: 14.5px; outline: none; transition: 0.3s;}
 input:focus, textarea:focus, select:focus { border-color: var(--accent); background: rgba(139, 92, 246, 0.05); box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);}
 textarea { resize: vertical; min-height: 100px; }
@@ -206,7 +217,7 @@ input[type="file"] { display: none; }
 .fs-content { flex: 1; position: relative; overflow-y: auto; background: #000; }
 iframe { width: 100%; height: 100%; border: none; background: white;}
 
-/* ================= SPLIT CODE VIEWER (SIDE BY SIDE) ================= */
+/* ================= SPLIT CODE VIEWER ================= */
 .code-viewer-container { padding: 20px; background: #0d1117; min-height: 100%; padding-bottom: 100px;}
 .code-split-container { display: flex; gap: 15px; height: 100%; min-height: 500px; }
 .code-box-wrap { flex: 1; display: flex; flex-direction: column; background: #161b22; border-radius: 16px; border: 1px solid #30363d; overflow: hidden; }
@@ -215,7 +226,6 @@ iframe { width: 100%; height: 100%; border: none; background: white;}
 .copy-btn-small { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600; transition: 0.3s; display: flex; align-items: center; gap: 6px;}
 .copy-btn-small:hover { background: var(--primary); border-color: var(--primary); }
 
-/* Mobile view ke liye upar-neeche stack karna */
 @media (max-width: 768px) {
     .code-split-container { flex-direction: column; }
     .code-box-wrap { min-height: 300px; }
@@ -231,7 +241,7 @@ iframe { width: 100%; height: 100%; border: none; background: white;}
     <h3 style="font-size:18px; font-weight:700;">Loading App...</h3>
 </div>
 
-<!-- NAYA TELEGRAM LOGIN SCREEN (Manual Fallback) -->
+<!-- NAYA TELEGRAM LOGIN SCREEN -->
 <div id="authOverlay">
     <div class="auth-box">
         <i class="fa-brands fa-telegram" style="font-size: 55px; color: #3b82f6; margin-bottom: 15px; filter: drop-shadow(0 0 15px rgba(59,130,246,0.5));"></i>
@@ -250,18 +260,20 @@ iframe { width: 100%; height: 100%; border: none; background: white;}
 
 <div id="toast" class="toast"><i class="fa-solid fa-circle-info"></i> <span id="toastMsg">Message</span></div>
 
-<!-- TOP BAR -->
+<!-- TOP BAR WITH LIVE CODY COINS -->
 <div class="topbar">
-  <div class="title">ℭØ𝔻ᗴ LIBRARY ᗪ𝚎𝕍🎭</div>
+  <div class="title">ℭØ𝔻ᗴ LIBRARY</div>
   <div class="top-stats">
-    <span><i class="fa-solid fa-gem"></i> Premium</span>
+    <span id="liveCoinBalance">
+        <div class="cody-icon"><i class="fa-solid fa-code"></i></div>
+        <b id="coinText">0.000</b>
+    </span>
   </div>
 </div>
 
 <!-- ================= HOME PAGE (CODE STORE) ================= -->
 <section id="home" class="page active">
   <div class="store-header-wrap">
-      <!-- Search bar only -->
       <div class="search-box">
           <i class="fa-solid fa-magnifying-glass"></i>
           <input type="text" id="searchInput" placeholder="Search projects by name..." oninput="filterStore()">
@@ -298,13 +310,8 @@ iframe { width: 100%; height: 100%; border: none; background: white;}
     <textarea id="text" placeholder="What's on your mind?"></textarea>
     
     <input type="text" id="codeTitle" placeholder="Project Title (e.g., UI Dashboard)" style="display:none;">
-    
-    <!-- User Code Input -->
     <textarea id="codeSource" placeholder="Paste USER HTML/CSS/JS Source Code here..." style="display:none; min-height:120px; font-family:monospace; border-left: 3px solid #8b5cf6;"></textarea>
-    
-    <!-- Admin Code Input -->
     <textarea id="adminCodeSource" placeholder="Paste ADMIN Source Code here (Optional)..." style="display:none; min-height:120px; font-family:monospace; border-left: 3px solid #ec4899;"></textarea>
-    
     <textarea id="codeDesc" placeholder="Describe your project's features..." style="display:none; min-height:80px;"></textarea>
 
     <label class="file-upload-label" for="photo" id="photoLabel">
@@ -331,8 +338,19 @@ iframe { width: 100%; height: 100%; border: none; background: white;}
       <div class="profile-name-text" id="profName">Loading...</div>
       <div class="profile-handle-text" id="profHandle">@loading</div>
       
-      <div class="profile-bio" id="profBio">-</div>
-      <div style="margin-top:10px; color:var(--muted); font-size:13px; font-weight:600;"><i class="fa-brands fa-telegram" style="color:#3b82f6"></i> <span id="profLoc">Telegram User</span></div>
+      <!-- WALLET CARD (NEW) -->
+      <div class="wallet-card">
+          <div class="wallet-title"><div class="cody-icon"><i class="fa-solid fa-code"></i></div> Cody Coin Balance</div>
+          <div class="wallet-balance" id="profCoinBalance">0.000</div>
+          <div class="wallet-price">Current Est. Price: $0.0000</div>
+          
+          <div class="wallet-warning">
+              <i class="fa-solid fa-lock" style="font-size:18px;"></i>
+              <span>Phase 1 locked. Coin release and withdrawal will be available in <b>6 Months</b>. Keep earning!</span>
+          </div>
+          
+          <button class="withdraw-btn" disabled><i class="fa-solid fa-lock"></i> Withdraw Locked</button>
+      </div>
       
       <div class="profile-action-btns">
           <button class="edit-btn" onclick="openEditModal()"><i class="fa-solid fa-pen"></i> Edit Profile</button>
@@ -363,7 +381,12 @@ iframe { width: 100%; height: 100%; border: none; background: white;}
 <!-- ================= FULLSCREEN MODALS FOR PREVIEW & CODE ================= -->
 <div id="previewModal" class="fs-modal">
     <div class="fs-header">
-        <div class="fs-title"><i class="fa-solid fa-mobile-screen" style="color:#8b5cf6;"></i> Live Preview</div>
+        <div class="fs-title"><i class="fa-solid fa-mobile-screen" style="color:#8b5cf6;"></i> Live App...</div>
+        <!-- Live coin text inside modal -->
+        <div style="font-size:14px; font-weight:800; color:#38bdf8; background:rgba(14, 165, 233, 0.1); padding:5px 12px; border-radius:20px; border:1px solid rgba(14,165,233,0.3); display:flex; align-items:center; gap:6px;">
+            <div class="cody-icon" style="width:16px; height:16px; font-size:8px;"><i class="fa-solid fa-code"></i></div>
+            <span id="modalCoinText">0.000</span>
+        </div>
         <button class="fs-close" onclick="closeStoreModal('previewModal')"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="fs-content">
@@ -379,7 +402,6 @@ iframe { width: 100%; height: 100%; border: none; background: white;}
     <div class="fs-content">
         <div class="code-viewer-container">
             <div class="code-split-container">
-                <!-- User Code Box -->
                 <div class="code-box-wrap">
                     <div class="code-box-header">
                         <span><i class="fa-solid fa-file-code" style="color:#8b5cf6;"></i> User Code</span>
@@ -387,7 +409,6 @@ iframe { width: 100%; height: 100%; border: none; background: white;}
                     </div>
                     <pre><code id="userCodeBlock"></code></pre>
                 </div>
-                <!-- Admin Code Box -->
                 <div class="code-box-wrap">
                     <div class="code-box-header">
                         <span><i class="fa-solid fa-user-shield" style="color:#ec4899;"></i> Admin Code</span>
@@ -411,6 +432,11 @@ iframe { width: 100%; height: 100%; border: none; background: white;}
 <script>
 window.loadedCodes = {};
 window.totalStoreItemsCount = 0; 
+
+// Earning System Variables
+let userBalance = 0.000;
+let coinTimer = null;
+let currentSessionEarned = 0.000;
 
 // ================= SUPABASE INITIALIZATION =================
 const SUPABASE_URL = "https://ubjfirquvrvughaxneyo.supabase.co";
@@ -509,12 +535,16 @@ async function initApp() {
 async function fetchUserProfile() {
     try {
         const { data } = await sb.from('users').select('*').eq('uid', currentUser.id).single();
-        userProfile = data || { username: 'User' };
+        userProfile = data || { username: 'User', balance: 0 };
         document.getElementById('profName').innerText = userProfile.username || 'User';
         document.getElementById('profHandle').innerText = `@${(userProfile.username||'user').replace(/\s+/g,'').toLowerCase()}`;
-        document.getElementById('profBio').innerText = userProfile.bio || 'Hello! I am using SocialApp Pro.';
         if(userProfile.photo_url) { document.getElementById('profAvatarDisplay').innerHTML = `<img src="${userProfile.photo_url}">`; }
-    } catch(e) { userProfile = { username: 'User' }; }
+        
+        // Update Coin Balance globally
+        userBalance = parseFloat(userProfile.balance || 0);
+        document.getElementById('coinText').innerText = userBalance.toFixed(3);
+        if(document.getElementById('profCoinBalance')) document.getElementById('profCoinBalance').innerText = userBalance.toFixed(3);
+    } catch(e) { userProfile = { username: 'User', balance: 0 }; }
 }
 
 async function fetchUserStats() {
@@ -627,8 +657,8 @@ async function fetchCodeStore() {
                     <button class="watch-ad-btn" id="btn_${item.id}" onclick="watchStoreAd('${item.id}')"><i class="fa-solid fa-circle-play" style="color:var(--primary)"></i> Watch Ad (${progress}/5)</button>
                 </div>` : `
                 <div class="action-row">
-                    <button class="btn-preview" onclick="openStorePreview('${item.id}')"><i class="fa-solid fa-eye"></i> Preview</button>
-                    <button class="btn-code" onclick="openStoreCode('${item.id}')"><i class="fa-solid fa-code"></i> Code</button>
+                    <button class="btn-preview" onclick="openStorePreview('${item.id}')"><div class="cody-icon"><i class="fa-solid fa-code"></i></div> Play & Earn Cody</button>
+                    <button class="btn-code" onclick="openStoreCode('${item.id}')"><i class="fa-solid fa-code"></i> Source Code</button>
                 </div>`;
             html += `<div class="app-card"><div class="app-img-box"><div class="app-author-badge">${uAvatar} ${u.username}</div>${imgStr}</div><div class="app-info"><div><div class="app-title">${title}</div><div class="app-desc">${desc}</div></div>${actionUI}</div></div>`;
         });
@@ -667,7 +697,7 @@ function handleStoreAdSuccess(appId) {
     fetchCodeStore(); 
 }
 
-// ================= SPLIT MODALS & COPY FIX =================
+// ================= PLAY & EARN LOGIC & MODALS =================
 function openStorePreview(appId) { 
     const rawCode = window.loadedCodes[appId] || ""; 
     let parts = rawCode.split("|||ADMIN_CODE|||");
@@ -675,6 +705,21 @@ function openStorePreview(appId) {
     const iframe = document.getElementById('previewFrame'); 
     iframe.srcdoc = userCodeOnly; 
     document.getElementById('previewModal').style.display = 'flex'; 
+
+    // Start Earning Coins Timer
+    currentSessionEarned = 0.000;
+    document.getElementById('modalCoinText').innerText = currentSessionEarned.toFixed(3);
+    clearInterval(coinTimer);
+    
+    coinTimer = setInterval(() => {
+        userBalance += 0.010;
+        currentSessionEarned += 0.010;
+        
+        // Update all UI elements
+        document.getElementById('coinText').innerText = userBalance.toFixed(3);
+        document.getElementById('modalCoinText').innerText = currentSessionEarned.toFixed(3);
+        if(document.getElementById('profCoinBalance')) document.getElementById('profCoinBalance').innerText = userBalance.toFixed(3);
+    }, 1000); // 1 Second interval
 }
 
 function openStoreCode(appId) { 
@@ -688,7 +733,23 @@ function openStoreCode(appId) {
     document.getElementById('codeModal').style.display = 'flex'; 
 }
 
-function closeStoreModal(modalId) { document.getElementById(modalId).style.display = 'none'; if(modalId === 'previewModal') { document.getElementById('previewFrame').srcdoc = ""; } }
+async function closeStoreModal(modalId) { 
+    document.getElementById(modalId).style.display = 'none'; 
+    if(modalId === 'previewModal') { 
+        document.getElementById('previewFrame').srcdoc = ""; 
+        
+        // Stop Timer & Save to Database
+        clearInterval(coinTimer);
+        if (currentSessionEarned > 0) {
+            try {
+                await sb.from('users').update({ balance: userBalance }).eq('uid', currentUser.id);
+                showToast(`🎉 You earned ${currentSessionEarned.toFixed(3)} Cody Coins!`, true);
+            } catch(e) {
+                console.error("Coin DB save failed", e);
+            }
+        }
+    } 
+}
 
 function copySpecificCode(type) { 
     const codeToCopy = type === 'user' ? activeUserCode : activeAdminCode;
@@ -804,7 +865,7 @@ function showToast(msg, isSuccess = false) {
     document.getElementById('toastMsg').innerText = msg; 
     toast.style.borderColor = isSuccess ? '#4ade80' : 'var(--border)'; 
     toast.querySelector('i').className = isSuccess ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-info';
-    toast.querySelector('i').style.color = isSuccess ? '#4ade80' : 'var(--primary)';
+    toast.querySelector('i').style.color = isSuccess ? '#4ade80' : '#0ea5e9';
     toast.classList.add('show');
     clearTimeout(toastTimeout); toastTimeout = setTimeout(() => toast.classList.remove('show'), 3000);
 }
