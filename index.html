@@ -14,7 +14,7 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <!-- ========================================== -->
 
-<!-- 🛑 MONETAG MAIN SDK SCRIPT YAHAN PASTE KAREIN 🛑 -->
+<!-- 🛑 MONETAG MAIN SDK SCRIPT 🛑 -->
 <script src="https://alwingulla.com/88/tag.min.js" data-zone="10364706" async data-cfasync="false"></script>
 
 <script>
@@ -44,7 +44,7 @@ if (typeof show_10364706 !== "function") {
     --primary-hover: #db2777; 
     --accent: #8b5cf6;
     --glass: rgba(20, 30, 51, 0.7); 
-    --cody-grad: linear-gradient(135deg, #0ea5e9, #2563eb); /* Tech Blue Gradient */
+    --cody-grad: linear-gradient(135deg, #0ea5e9, #2563eb); 
     --cody-glow: rgba(14, 165, 233, 0.5);
 }
 body { background: radial-gradient(circle at top left, #1a1525 0%, var(--bg) 100%); color: var(--text); padding-bottom: 100px; padding-top: 70px; min-height: 100vh; overflow-x: hidden; }
@@ -61,33 +61,20 @@ body { background: radial-gradient(circle at top left, #1a1525 0%, var(--bg) 100
 .tg-input-wrapper i { color: #3b82f6; font-size: 18px; }
 .tg-input-wrapper input { background: transparent !important; border: none !important; color: white !important; width: 100%; height: 100%; outline: none; font-size: 15px; padding: 0 !important; margin: 0 !important; }
 
-/* LOADING SCREEN FOR AUTO LOGIN */
+/* LOADING SCREEN */
 #loadingOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; }
 .spinner { width: 50px; height: 50px; border: 5px solid rgba(255,255,255,0.1); border-top-color: #3b82f6; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ================= PROFESSIONAL CODY LOGO CSS ================= */
-.cody-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 22px;
-    height: 22px;
-    background: var(--cody-grad);
-    border-radius: 6px;
-    color: white;
-    font-size: 10px;
-    font-weight: 900;
-    box-shadow: 0 0 12px var(--cody-glow);
-    border: 1px solid rgba(255,255,255,0.2);
-}
+/* CODY LOGO CSS */
+.cody-icon { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; background: var(--cody-grad); border-radius: 6px; color: white; font-size: 10px; font-weight: 900; box-shadow: 0 0 12px var(--cody-glow); border: 1px solid rgba(255,255,255,0.2); }
 
-/* ================= TOP BAR ================= */
+/* TOP BAR */
 .topbar { position: fixed; top: 0; left: 0; width: 100%; padding: 15px 20px; background: var(--glass); backdrop-filter: blur(15px); border-bottom: 1px solid var(--border); z-index: 100; display: flex; justify-content: space-between; align-items: center; }
 .topbar .title { font-size: 20px; font-weight: 800; background: linear-gradient(45deg, #0ea5e9, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
 .top-stats span { font-size: 15px; font-weight: 800; background: rgba(14, 165, 233, 0.1); padding: 6px 14px; border-radius: 30px; color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.3); box-shadow: 0 0 15px rgba(14, 165, 233, 0.1); display: flex; align-items: center; gap: 8px; transition: 0.3s;}
 
-/* ================= FLOATING BOTTOM NAV ================= */
+/* FLOATING NAV */
 nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 450px; height: 70px; background: rgba(20, 30, 51, 0.85); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 35px; display: flex; justify-content: space-around; align-items: center; z-index: 100; box-shadow: 0 15px 35px rgba(0,0,0,0.5); padding: 0 10px; }
 .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 11px; font-weight: 600; color: var(--muted); cursor: pointer; transition: all 0.3s ease; position: relative; height: 100%; }
 .nav-item i { font-size: 20px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
@@ -95,12 +82,12 @@ nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); wid
 .nav-item.active i { transform: translateY(-4px) scale(1.1); color: var(--primary); text-shadow: 0 0 15px rgba(236, 72, 153, 0.5); }
 .nav-item.active::after { content: ''; position: absolute; bottom: 12px; width: 5px; height: 5px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 10px var(--primary); }
 
-/* ================= TOAST NOTIFICATION ================= */
+/* TOAST */
 .toast { position: fixed; bottom: 100px; left: 50%; transform: translate(-50%, 50px); background: #1e293b; border: 1px solid var(--border); color: white; padding: 12px 24px; border-radius: 30px; font-size: 13px; font-weight: 600; opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10000; box-shadow: 0 10px 25px rgba(0,0,0,0.5); pointer-events: none; white-space: nowrap; display: flex; align-items: center; gap: 8px;}
 .toast i { font-size: 16px; }
 .toast.show { transform: translate(-50%, 0); opacity: 1; }
 
-/* ================= UI ELEMENTS ================= */
+/* UI ELEMENTS */
 .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 10px;}
 .empty-state i { font-size: 50px; background: -webkit-linear-gradient(45deg, var(--muted), #334155); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 5px;}
 .empty-state h3 { font-weight: 600; color: white; }
@@ -110,9 +97,8 @@ nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); wid
 
 .card, .tweet-card { background: linear-gradient(145deg, var(--card), #0f1524); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); }
 
-/* ================= CODE STORE UI ================= */
+/* CODE STORE UI */
 .store-header-wrap { display: flex; flex-direction: column; margin-bottom: 25px; }
-
 .search-box { display: flex; align-items: center; gap: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 16px; padding: 0 16px; height: 50px; transition: 0.3s; box-shadow: inset 0 2px 5px rgba(0,0,0,0.2); }
 .search-box:focus-within { border-color: var(--accent); background: rgba(139, 92, 246, 0.05); box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1); }
 .search-box i { color: var(--muted); font-size: 16px; }
@@ -122,12 +108,10 @@ nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); wid
 .app-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.3); transition: all 0.3s ease; display: flex; flex-direction: column;}
 .app-card:hover { transform: translateY(-5px); border-color: rgba(14, 165, 233, 0.4); box-shadow: 0 15px 35px rgba(14, 165, 233, 0.15); }
 .app-img-box { width: 100%; background: #0b1120; position: relative; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: center; overflow: hidden; min-height: 160px; padding: 10px 0;}
-.app-img-box img { width: 100%; height: auto; max-height: 220px; object-fit: contain; transition: 0.3s; display: block;}
+.app-img-box img, .app-img-box video { width: 100%; height: auto; max-height: 220px; object-fit: contain; transition: 0.3s; display: block;}
 .app-card:hover .app-img-box img { transform: scale(1.05); }
-
 .app-author-badge { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); color: white; font-size: 11px; font-weight: 500; padding: 5px 10px; border-radius: 12px; display: flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,0.1); z-index: 5;}
 .app-author-badge img { width: 16px; height: 16px; border-radius: 50%; object-fit: cover; }
-
 .app-info { padding: 16px; text-align: center; flex: 1; display: flex; flex-direction: column; justify-content: space-between;}
 .app-title { font-size: 17px; font-weight: 700; color: white; margin-bottom: 6px; letter-spacing: -0.3px;}
 .app-desc { font-size: 13px; color: var(--muted); margin-bottom: 18px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; }
@@ -138,7 +122,6 @@ nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); wid
 .lock-text { font-size: 13px; font-weight: 700; color: #f43f5e; margin: 0; letter-spacing: 0.5px;}
 .progress-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);}
 .progress-fill { height: 100%; background: linear-gradient(90deg, #8b5cf6, #ec4899); width: 0%; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 10px;}
-
 .watch-ad-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 12px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; }
 .watch-ad-btn:hover { border-color: #0ea5e9; background: rgba(14, 165, 233, 0.15); box-shadow: 0 0 15px rgba(14,165,233,0.2);}
 
@@ -158,8 +141,6 @@ nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); wid
 .tweet-header .name { font-weight: 700; color: white; font-size: 16px; letter-spacing: -0.3px;}
 .tweet-header .handle { color: var(--muted); font-size: 13px; font-weight: 500;}
 .tweet-text { font-size: 15px; color: #e2e8f0; line-height: 1.6; word-wrap: break-word; font-weight: 400;}
-.tweet-img { margin-top: 15px; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 5px 15px rgba(0,0,0,0.3);}
-.tweet-img img { width: 100%; display: block; }
 
 .tweet-actions { display: flex; justify-content: space-between; max-width: 85%; margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px; }
 .t-action-btn { display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--muted); font-size: 14px; font-weight: 600; transition:0.3s; padding: 5px 10px; border-radius: 20px;}
@@ -167,7 +148,47 @@ nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); wid
 .t-action-btn.like:hover, .t-action-btn.liked { color: #f43f5e; }
 .t-action-btn.liked i { color: #f43f5e; text-shadow: 0 0 10px rgba(244,63,94,0.5);}
 
-/* ================= PROFILE UI & CODY WALLET ================= */
+/* ================= NEW MEDIA (VIDEO/IMAGE) STYLES ================= */
+.feed-media { width: 100%; max-height: 400px; object-fit: cover; border-radius: 16px; margin-top: 12px; background: #000; border: 1px solid var(--border); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+
+/* ================= PROFESSIONAL COMMENTS & REPLIES (FULL WIDTH) ================= */
+.comment-box { width: 100%; margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px; display: none; }
+.comment-list { max-height: 400px; overflow-y: auto; padding-right: 5px; scroll-behavior: smooth;}
+.comment-list::-webkit-scrollbar { width: 4px; }
+.comment-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+
+.comment-item { display: flex; gap: 10px; margin-bottom: 15px; width: 100%; }
+.comment-item .tweet-avatar { width: 32px; height: 32px; border: none; flex-shrink: 0; }
+.comment-body { flex: 1; min-width: 0; }
+
+.comment-bubble { font-size: 14px; color: #e2e8f0; line-height: 1.5; word-wrap: break-word; }
+.comment-bubble b { color: white; margin-right: 5px; font-size: 14px; font-weight: 700; cursor: pointer; }
+.comment-bubble .tagged-user { color: var(--accent); font-weight: 600; }
+
+.comment-actions-row { display: flex; align-items: center; gap: 15px; margin-top: 5px; font-size: 12px; color: var(--muted); font-weight: 600; }
+.comment-actions-row span { cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 5px;}
+.comment-actions-row span:hover { color: white; }
+.comment-like-btn.liked { color: #f43f5e !important; }
+.comment-like-btn.liked i { font-weight: 900; }
+
+.replies-container { margin-left: 32px; margin-top: 5px; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 12px; margin-bottom: 15px; }
+.reply-item { display: flex; gap: 8px; margin-bottom: 10px; }
+.reply-item .tweet-avatar { width: 24px; height: 24px; }
+.reply-bubble { font-size: 13.5px; }
+.reply-bubble b { font-size: 13px; }
+
+.comment-input-wrapper { display: flex; flex-direction: column; position: sticky; bottom: 0; background: var(--card); padding: 12px 0 5px 0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 10px; width: 100%;}
+.reply-indicator { display: none; justify-content: space-between; align-items: center; font-size: 12px; color: var(--accent); padding: 0 5px 8px 5px; font-weight: 600;}
+.reply-indicator i { cursor: pointer; color: var(--muted); font-size: 14px; transition: 0.2s; padding: 5px;}
+.reply-indicator i:hover { color: #f87171; }
+.comment-input-row { display: flex; gap: 10px; align-items: center; width: 100%; }
+.comment-input-row .tweet-avatar { width: 36px; height: 36px; flex-shrink: 0; }
+.comment-input-box { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 24px; display: flex; align-items: center; padding: 2px 15px; min-width: 0; }
+.comment-input-box input { flex: 1; border: none !important; background: transparent !important; margin: 0 !important; padding: 10px 0 !important; font-size: 14px; color: white; outline: none; box-shadow: none !important; min-width: 0;}
+.comment-submit-btn { background: transparent; border: none; color: var(--primary); font-size: 16px; cursor: pointer; transition: 0.3s; padding: 5px; flex-shrink: 0;}
+.comment-submit-btn:hover { color: var(--primary-hover); transform: scale(1.1); }
+
+/* PROFILE UI & CODY WALLET */
 .profile-header { background: var(--card); border: 1px solid var(--border); border-radius: 24px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
 .profile-cover { height: 140px; background: linear-gradient(135deg, #0f172a, #1e293b); position: relative; overflow: hidden; border-bottom: 1px solid rgba(255,255,255,0.05);}
 .profile-info-wrap { display: flex; flex-direction: column; align-items: center; padding: 0 20px 25px 20px; position: relative; margin-top: -60px; }
@@ -194,7 +215,7 @@ nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); wid
 .stat-box b { font-size: 20px; color: white; font-weight: 800;}
 .stat-box span { font-size: 11px; color: var(--muted); text-transform: uppercase; font-weight: 700; letter-spacing: 1px;}
 
-/* ================= GENERAL INPUTS & BUTTONS ================= */
+/* GENERAL INPUTS & BUTTONS */
 .btn-primary { background: linear-gradient(135deg, #3b82f6, var(--accent)); color: white; border: none; border-radius: 14px; height: 48px; padding: 0 20px; font-weight: 700; font-size: 15px; cursor: pointer; transition: 0.3s; width: 100%; display: flex; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);}
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(59, 130, 246, 0.5); }
 input, textarea, select { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 14px; padding: 15px 18px; color: white; margin-bottom: 15px; font-size: 14.5px; outline: none; transition: 0.3s;}
@@ -217,7 +238,7 @@ input[type="file"] { display: none; }
 .fs-content { flex: 1; position: relative; overflow-y: auto; background: #000; }
 iframe { width: 100%; height: 100%; border: none; background: white;}
 
-/* ================= SPLIT CODE VIEWER ================= */
+/* SPLIT CODE VIEWER */
 .code-viewer-container { padding: 20px; background: #0d1117; min-height: 100%; padding-bottom: 100px;}
 .code-split-container { display: flex; gap: 15px; height: 100%; min-height: 500px; }
 .code-box-wrap { flex: 1; display: flex; flex-direction: column; background: #161b22; border-radius: 16px; border: 1px solid #30363d; overflow: hidden; }
@@ -241,7 +262,7 @@ iframe { width: 100%; height: 100%; border: none; background: white;}
     <h3 style="font-size:18px; font-weight:700;">Loading App...</h3>
 </div>
 
-<!-- NAYA TELEGRAM LOGIN SCREEN -->
+<!-- TELEGRAM LOGIN SCREEN -->
 <div id="authOverlay">
     <div class="auth-box">
         <i class="fa-brands fa-telegram" style="font-size: 55px; color: #3b82f6; margin-bottom: 15px; filter: drop-shadow(0 0 15px rgba(59,130,246,0.5));"></i>
@@ -314,15 +335,25 @@ iframe { width: 100%; height: 100%; border: none; background: white;}
     <textarea id="adminCodeSource" placeholder="Paste ADMIN Source Code here (Optional)..." style="display:none; min-height:120px; font-family:monospace; border-left: 3px solid #ec4899;"></textarea>
     <textarea id="codeDesc" placeholder="Describe your project's features..." style="display:none; min-height:80px;"></textarea>
 
+    <!-- UPLOAD MEDIA SECTION (FILE OR URL) -->
     <label class="file-upload-label" for="photo" id="photoLabel">
         <i class="fa-solid fa-cloud-arrow-up" style="font-size:24px; color:var(--primary)"></i> 
         <div style="display:flex; flex-direction:column; align-items:flex-start;">
-            <span id="fileName" style="color:white; font-size:15px;">Upload Image</span>
-            <span style="font-size:12px; font-weight:400;">JPG, PNG or GIF</span>
+            <span id="fileName" style="color:white; font-size:15px;">Upload Photo/Video</span>
+            <span style="font-size:12px; font-weight:400;">JPG, PNG, GIF or MP4 (Max 5MB)</span>
         </div>
     </label>
-    <input type="file" id="photo" accept="image/*" onchange="document.getElementById('fileName').innerText = this.files[0] ? this.files[0].name : 'Upload Image'">
+    <input type="file" id="photo" accept="image/*, video/mp4, video/x-m4v, video/*" onchange="document.getElementById('fileName').innerText = this.files[0] ? this.files[0].name : 'Upload Photo/Video'">
     
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:15px;">
+       <hr style="flex:1; border:none; border-top:1px solid rgba(255,255,255,0.1);">
+       <span style="color:var(--muted); font-size:12px; font-weight:700;">OR PASTE LINK</span>
+       <hr style="flex:1; border:none; border-top:1px solid rgba(255,255,255,0.1);">
+    </div>
+    
+    <input type="text" id="mediaUrl" placeholder="Paste direct Image or Video URL here...">
+    <!-- END UPLOAD MEDIA SECTION -->
+
     <button id="publishBtn" class="btn-primary" onclick="uploadContent()" style="margin-top:15px;">
         Publish Now <i class="fa-solid fa-paper-plane"></i>
     </button>
@@ -382,7 +413,6 @@ iframe { width: 100%; height: 100%; border: none; background: white;}
 <div id="previewModal" class="fs-modal">
     <div class="fs-header">
         <div class="fs-title"><i class="fa-solid fa-mobile-screen" style="color:#8b5cf6;"></i> Live App...</div>
-        <!-- Live coin text inside modal -->
         <div style="font-size:14px; font-weight:800; color:#38bdf8; background:rgba(14, 165, 233, 0.1); padding:5px 12px; border-radius:20px; border:1px solid rgba(14,165,233,0.3); display:flex; align-items:center; gap:6px;">
             <div class="cody-icon" style="width:16px; height:16px; font-size:8px;"><i class="fa-solid fa-code"></i></div>
             <span id="modalCoinText">0.000</span>
@@ -540,7 +570,6 @@ async function fetchUserProfile() {
         document.getElementById('profHandle').innerText = `@${(userProfile.username||'user').replace(/\s+/g,'').toLowerCase()}`;
         if(userProfile.photo_url) { document.getElementById('profAvatarDisplay').innerHTML = `<img src="${userProfile.photo_url}">`; }
         
-        // Update Coin Balance globally
         userBalance = parseFloat(userProfile.balance || 0);
         document.getElementById('coinText').innerText = userBalance.toFixed(3);
         if(document.getElementById('profCoinBalance')) document.getElementById('profCoinBalance').innerText = userBalance.toFixed(3);
@@ -564,7 +593,7 @@ function toggleUploadType() {
     document.getElementById('codeDesc').style.display = isCode ? 'block' : 'none';
     document.getElementById('codeSource').style.display = isCode ? 'block' : 'none';
     document.getElementById('adminCodeSource').style.display = isCode ? 'block' : 'none';
-    document.getElementById('photoLabel').querySelector('span').innerText = isCode ? 'Upload App Thumbnail' : 'Upload Image';
+    document.getElementById('photoLabel').querySelector('span').innerText = isCode ? 'Upload App Thumbnail' : 'Upload Photo/Video';
 }
 
 function compressImage(file) {
@@ -580,15 +609,40 @@ function compressImage(file) {
     });
 }
 
+function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+}
+
 async function uploadContent() {
     const type = document.getElementById('uploadType').value; 
     const photoFile = document.getElementById('photo').files[0]; 
+    const mediaUrl = document.getElementById('mediaUrl').value.trim();
     const btn = document.getElementById('publishBtn');
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publishing...'; btn.disabled = true;
+    
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publishing...'; 
+    btn.disabled = true;
     
     try {
-        let b64Image = null; 
-        if(photoFile) { b64Image = await compressImage(photoFile); }
+        let finalMedia = null; 
+        
+        // Priority 1: File Upload
+        if(photoFile) { 
+            if(photoFile.type.startsWith('image/')) {
+                finalMedia = await compressImage(photoFile); 
+            } else if (photoFile.type.startsWith('video/')) {
+                if(photoFile.size > 5 * 1024 * 1024) throw new Error("Video size must be less than 5MB!");
+                finalMedia = await fileToBase64(photoFile);
+            }
+        } 
+        // Priority 2: Direct URL Input
+        else if(mediaUrl) {
+            finalMedia = mediaUrl;
+        }
         
         if(type === "code") {
             const title = document.getElementById('codeTitle').value.trim();
@@ -596,19 +650,19 @@ async function uploadContent() {
             const userSource = document.getElementById('codeSource').value.trim();
             const adminSource = document.getElementById('adminCodeSource').value.trim() || "No admin code provided.";
             
-            if(!title || !userSource || !b64Image) throw new Error("Title, User Source Code, and Thumbnail required!");
+            if(!title || !userSource || !finalMedia) throw new Error("Title, Code, and Media (File or Link) required!");
             
             const combinedText = title + "|||" + desc;
             const combinedSource = userSource + "|||ADMIN_CODE|||" + adminSource;
             
-            await sb.from('user_ads').insert({ uid: currentUser.id, text: combinedText, ad_code: combinedSource, link: b64Image, views_received: 0 });
+            await sb.from('user_ads').insert({ uid: currentUser.id, text: combinedText, ad_code: combinedSource, link: finalMedia, views_received: 0 });
             showToast("Project Published Successfully!", true);
             await fetchCodeStore();
             openPage('home', document.querySelectorAll('.nav-item')[0]);
         } else {
             const textVal = document.getElementById('text').value.trim(); 
-            if(!textVal && !b64Image) throw new Error("Write a post or add an image!");
-            const { data } = await sb.from('posts').insert({ uid: currentUser.id, text: textVal, image_url: b64Image, likes: 0, views: 0 }).select();
+            if(!textVal && !finalMedia) throw new Error("Write a post or add a Photo/Video (File or Link)!");
+            const { data } = await sb.from('posts').insert({ uid: currentUser.id, text: textVal, image_url: finalMedia, likes: 0, views: 0 }).select();
             if(data && data[0]) { 
                 const html = generatePostHTML(data[0], userProfile || { username: 'User' }); 
                 document.getElementById('postFeed').insertAdjacentHTML('afterbegin', html); 
@@ -617,10 +671,24 @@ async function uploadContent() {
             showToast("Post Live!"); 
             openPage('info', document.querySelectorAll('.nav-item')[1]);
         }
-        document.getElementById('text').value = ""; document.getElementById('codeTitle').value = ""; document.getElementById('codeDesc').value = ""; document.getElementById('codeSource').value = ""; document.getElementById('adminCodeSource').value = ""; document.getElementById('photo').value = ""; document.getElementById('fileName').innerText = "Upload Image";
+        
+        // Clear inputs after success
+        document.getElementById('text').value = ""; 
+        document.getElementById('codeTitle').value = ""; 
+        document.getElementById('codeDesc').value = ""; 
+        document.getElementById('codeSource').value = ""; 
+        document.getElementById('adminCodeSource').value = ""; 
+        document.getElementById('photo').value = ""; 
+        document.getElementById('mediaUrl').value = ""; 
+        document.getElementById('fileName').innerText = "Upload Photo/Video";
         fetchUserStats();
-    } catch(e) { showToast(e.message); }
-    btn.innerHTML = 'Publish Now <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false;
+        
+    } catch(e) { 
+        showToast(e.message); 
+    }
+    
+    btn.innerHTML = 'Publish Now <i class="fa-solid fa-paper-plane"></i>'; 
+    btn.disabled = false;
 }
 
 // ================= CODE STORE & SEARCH =================
@@ -632,10 +700,7 @@ async function fetchCodeStore() {
         window.totalStoreItemsCount = data ? data.length : 0;
         if(document.getElementById('totalStoreItems')) document.getElementById('totalStoreItems').innerText = window.totalStoreItemsCount;
         
-        if(!data || data.length === 0) { 
-            emptyEl.style.display = 'flex'; 
-            grid.innerHTML = ""; return; 
-        }
+        if(!data || data.length === 0) { emptyEl.style.display = 'flex'; grid.innerHTML = ""; return; }
         emptyEl.style.display = 'none';
         let unlockData = JSON.parse(localStorage.getItem('storeUnlocks')) || {};
         window.loadedCodes = {}; 
@@ -646,7 +711,11 @@ async function fetchCodeStore() {
             const uAvatar = u.photo_url ? `<img src="${u.photo_url}">` : '<i class="fa-solid fa-user" style="font-size:10px;"></i>';
             let parts = (item.text || "").split("|||");
             let title = parts[0] || "Untitled Project"; let desc = parts[1] || "";
-            let imgStr = item.link ? `<img src="${item.link}">` : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#334155;"><i class="fa-solid fa-image" style="font-size:40px;"></i></div>`;
+            
+            // Check if store media is video link or image link
+            let isVidStore = item.link && (item.link.startsWith('data:video') || item.link.toLowerCase().endsWith('.mp4') || item.link.toLowerCase().endsWith('.webm'));
+            let imgStr = item.link ? (isVidStore ? `<video src="${item.link}" muted loop autoplay playsinline style="width:100%;height:100%;object-fit:cover;"></video>` : `<img src="${item.link}">`) : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#334155;"><i class="fa-solid fa-image" style="font-size:40px;"></i></div>`;
+            
             window.loadedCodes[item.id] = item.ad_code || "";
             let progress = unlockData[item.id] || 0; let isUnlocked = progress >= 5; let progressPercent = (progress / 5) * 100;
             
@@ -706,7 +775,6 @@ function openStorePreview(appId) {
     iframe.srcdoc = userCodeOnly; 
     document.getElementById('previewModal').style.display = 'flex'; 
 
-    // Start Earning Coins Timer
     currentSessionEarned = 0.000;
     document.getElementById('modalCoinText').innerText = currentSessionEarned.toFixed(3);
     clearInterval(coinTimer);
@@ -714,12 +782,10 @@ function openStorePreview(appId) {
     coinTimer = setInterval(() => {
         userBalance += 0.010;
         currentSessionEarned += 0.010;
-        
-        // Update all UI elements
         document.getElementById('coinText').innerText = userBalance.toFixed(3);
         document.getElementById('modalCoinText').innerText = currentSessionEarned.toFixed(3);
         if(document.getElementById('profCoinBalance')) document.getElementById('profCoinBalance').innerText = userBalance.toFixed(3);
-    }, 1000); // 1 Second interval
+    }, 1000);
 }
 
 function openStoreCode(appId) { 
@@ -737,16 +803,12 @@ async function closeStoreModal(modalId) {
     document.getElementById(modalId).style.display = 'none'; 
     if(modalId === 'previewModal') { 
         document.getElementById('previewFrame').srcdoc = ""; 
-        
-        // Stop Timer & Save to Database
         clearInterval(coinTimer);
         if (currentSessionEarned > 0) {
             try {
                 await sb.from('users').update({ balance: userBalance }).eq('uid', currentUser.id);
                 showToast(`🎉 You earned ${currentSessionEarned.toFixed(3)} Cody Coins!`, true);
-            } catch(e) {
-                console.error("Coin DB save failed", e);
-            }
+            } catch(e) {}
         }
     } 
 }
@@ -754,7 +816,6 @@ async function closeStoreModal(modalId) {
 function copySpecificCode(type) { 
     const codeToCopy = type === 'user' ? activeUserCode : activeAdminCode;
     if (!codeToCopy) return; 
-
     if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(codeToCopy).then(() => showToast(`✅ ${type === 'user' ? 'User' : 'Admin'} Code Copied!`, true)).catch(() => showToast("Copy failed!", false));
     } else {
@@ -765,37 +826,94 @@ function copySpecificCode(type) {
     }
 }
 
-// ================= POSTS & COMMENTS =================
+// ================= POSTS & PROFESSIONAL COMMENTS =================
 function generatePostHTML(p, userObj) {
     let u = userObj || { username: 'User', photo_url: '' }; 
     const avatar = u.photo_url ? `<img src="${u.photo_url}">` : `<i class="fa-solid fa-user"></i>`;
-    const imgHtml = p.image_url ? `<div class="tweet-img"><img src="${p.image_url}"></div>` : '';
+    
+    let mediaHtml = '';
+    if(p.image_url) {
+        // Updated to support direct link video like .mp4, .webm
+        let isVideo = p.image_url.startsWith('data:video') || p.image_url.toLowerCase().endsWith('.mp4') || p.image_url.toLowerCase().endsWith('.webm');
+        if(isVideo) {
+            mediaHtml = `<video class="feed-media" controls preload="metadata"><source src="${p.image_url}"></video>`;
+        } else {
+            mediaHtml = `<img class="feed-media" src="${p.image_url}">`;
+        }
+    }
+    
     const safePId = String(p.id).replace(/'/g, "\\'"); 
     const postComments = allComments.filter(c => c.post_id === p.id);
     
-    const commentsHTML = postComments.map(c => {
+    let commentsHTML = "";
+    postComments.forEach(c => {
         const cu = allUsers.find(x => x.uid === c.uid) || {username: 'User'};
         const cAvatar = cu.photo_url ? `<img src="${cu.photo_url}">` : '<i class="fa-solid fa-user"></i>';
-        return `<div class="comment"><div class="tweet-avatar">${cAvatar}</div><div class="comment-content"><div class="comment-text-wrap"><b>${cu.username}</b> ${c.text}</div><div class="reply-btn" onclick="showInlineReply(this, '${cu.username}', '${safePId}')"><i class="fa-solid fa-reply"></i> Reply</div></div></div>`;
-    }).join('');
+        
+        let isReply = c.text.startsWith('<span'); 
+        
+        if(!isReply) {
+            commentsHTML += `
+            <div class="comment-item main-comment">
+                <div class="tweet-avatar">${cAvatar}</div>
+                <div class="comment-body">
+                    <div class="comment-bubble"><b>${cu.username}</b> ${c.text}</div>
+                    <div class="comment-actions-row">
+                        <span class="comment-like-btn" onclick="likeComment(this)"><i class="fa-regular fa-heart"></i> <b class="c-likes-count">0</b></span>
+                        <span onclick="focusReplyInput('${safePId}', '${cu.username}')"><i class="fa-solid fa-reply"></i> Reply</span>
+                    </div>
+                </div>
+            </div>`;
+        } else {
+            commentsHTML += `
+            <div class="replies-container">
+                <div class="reply-item">
+                    <div class="tweet-avatar">${cAvatar}</div>
+                    <div class="comment-body">
+                        <div class="comment-bubble reply-bubble"><b>${cu.username}</b> ${c.text}</div>
+                        <div class="comment-actions-row">
+                            <span class="comment-like-btn" onclick="likeComment(this)"><i class="fa-regular fa-heart"></i> <b class="c-likes-count">0</b></span>
+                            <span onclick="focusReplyInput('${safePId}', '${cu.username}')"><i class="fa-solid fa-reply"></i> Reply</span>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        }
+    });
+
+    const myAvatar = userProfile && userProfile.photo_url ? `<img src="${userProfile.photo_url}">` : '<i class="fa-solid fa-user"></i>';
 
     return `
-    <div class="tweet-card">
-        <div class="tweet-avatar">${avatar}</div>
-        <div class="tweet-content">
-            <div class="tweet-header"><span class="name">${u.username}</span><span class="handle">@${u.username.toLowerCase()}</span></div>
-            <div class="tweet-text">${p.text}</div>${imgHtml}
-            <div class="tweet-actions">
-                <div class="t-action-btn comment" onclick="toggleComment(this)"><i class="fa-regular fa-message"></i> <span class="count">${postComments.length}</span></div>
-                <div class="t-action-btn share"><i class="fa-solid fa-retweet"></i></div>
-                <div class="t-action-btn like" onclick="likePost(this, '${safePId}', ${p.likes||0})"><i class="fa-regular fa-heart"></i> <span>${p.likes||0}</span></div>
-            </div>
-            <div class="comment-box">
-                <div class="comment-input-wrapper">
-                    <input class="comment-input" placeholder="Add a comment..." onkeydown="if(event.key==='Enter'){addComment(this, '${safePId}')}">
-                    <button class="comment-submit-btn" onclick="addComment(this.previousElementSibling, '${safePId}')"><i class="fa-solid fa-arrow-up"></i></button>
+    <div class="tweet-card" style="flex-direction: column;">
+        <div style="display: flex; gap: 15px; width: 100%;">
+            <div class="tweet-avatar">${avatar}</div>
+            <div class="tweet-content">
+                <div class="tweet-header"><span class="name">${u.username}</span><span class="handle">@${u.username.toLowerCase()}</span></div>
+                <div class="tweet-text">${p.text}</div>${mediaHtml}
+                <div class="tweet-actions">
+                    <div class="t-action-btn comment" onclick="toggleComment(this)"><i class="fa-regular fa-message"></i> <span class="count">${postComments.length}</span></div>
+                    <div class="t-action-btn share"><i class="fa-solid fa-retweet"></i></div>
+                    <div class="t-action-btn like" onclick="likePost(this, '${safePId}', ${p.likes||0})"><i class="fa-regular fa-heart"></i> <span>${p.likes||0}</span></div>
                 </div>
-                <div class="comment-list">${commentsHTML}</div>
+            </div>
+        </div>
+        
+        <div class="comment-box" id="cbox_${safePId}">
+            <div class="comment-list">${commentsHTML}</div>
+            
+            <div class="comment-input-wrapper">
+                <div class="reply-indicator" id="replyInd_${safePId}">
+                    <span>Replying to <b id="replyTarget_${safePId}">@user</b></span>
+                    <i class="fa-solid fa-xmark" onclick="cancelReply('${safePId}')"></i>
+                </div>
+                
+                <div class="comment-input-row">
+                    <div class="tweet-avatar">${myAvatar}</div>
+                    <div class="comment-input-box">
+                        <input class="comment-input" id="cInput_${safePId}" placeholder="Add a comment..." onkeydown="if(event.key==='Enter'){submitNewComment(this, '${safePId}')}">
+                        <button class="comment-submit-btn" onclick="submitNewComment(this.previousElementSibling, '${safePId}')"><i class="fa-solid fa-paper-plane"></i></button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>`;
@@ -810,43 +928,111 @@ async function fetchPostsFeed() {
     } catch(e) {}
 }
 
-function toggleComment(b) { const box = b.closest(".tweet-content").querySelector(".comment-box"); box.style.display = box.style.display === "block" ? "none" : "block"; }
-
-function showInlineReply(btn, username, postId) {
-    let commentContent = btn.closest('.comment-content');
-    if(commentContent.querySelector('.inline-reply-container')) return;
-    document.querySelectorAll('.inline-reply-container').forEach(el => el.remove());
-    commentContent.insertAdjacentHTML('beforeend', `<div class="inline-reply-container" style="display:flex; gap:8px; margin-top:10px; width:100%;">
-        <input type="text" class="inline-reply-input" placeholder="Reply to @${username}..." style="flex:1; background:rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:20px; padding:8px 14px; color:white; font-size:13px; outline:none;" onkeydown="if(event.key==='Enter'){submitInlineReply(this.nextElementSibling, '${postId}', '${username}')}">
-        <button class="inline-reply-btn" style="background:var(--accent); color:white; border:none; border-radius:50%; width:32px; height:32px;" onclick="submitInlineReply(this, '${postId}', '${username}')"><i class="fa-solid fa-arrow-up"></i></button>
-    </div>`);
-    commentContent.querySelector('.inline-reply-input').focus();
+function toggleComment(b) { 
+    const box = b.closest(".tweet-card").querySelector(".comment-box"); 
+    box.style.display = box.style.display === "block" ? "none" : "block"; 
 }
 
-async function submitInlineReply(btn, postId, username) {
-    const input = btn.previousElementSibling; const rawText = input.value.trim(); if(!rawText) return;
-    const finalMsg = `<b>@${username}</b> ${rawText}`; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+function likeComment(btn) {
+    let countEl = btn.querySelector('.c-likes-count');
+    let icon = btn.querySelector('i');
+    let count = parseInt(countEl.innerText);
+
+    if(btn.classList.contains('liked')) {
+        btn.classList.remove('liked');
+        icon.className = 'fa-regular fa-heart';
+        countEl.innerText = count - 1;
+    } else {
+        btn.classList.add('liked');
+        icon.className = 'fa-solid fa-heart';
+        countEl.innerText = count + 1;
+    }
+}
+
+function focusReplyInput(postId, username) {
+    const box = document.getElementById('cbox_' + postId);
+    const input = document.getElementById('cInput_' + postId);
+    const indicator = document.getElementById('replyInd_' + postId);
+    const targetText = document.getElementById('replyTarget_' + postId);
+    
+    indicator.style.display = 'flex';
+    targetText.innerText = '@' + username;
+    input.dataset.replyTo = username;
+    input.focus();
+}
+
+function cancelReply(postId) {
+    const input = document.getElementById('cInput_' + postId);
+    const indicator = document.getElementById('replyInd_' + postId);
+    indicator.style.display = 'none';
+    input.dataset.replyTo = "";
+    input.focus();
+}
+
+async function submitNewComment(inputEl, postId) {
+    let textVal = inputEl.value.trim(); 
+    if(!textVal) return; 
+    inputEl.disabled = true;
+    
+    let dbText = textVal;
+    let replyTarget = inputEl.dataset.replyTo;
+    
+    if(replyTarget) {
+        dbText = `<span class="tagged-user">@${replyTarget}</span> ${textVal}`;
+    }
+
     try {
-        await sb.from('comments').insert({ post_id: postId, uid: currentUser.id, text: finalMsg }); 
+        await sb.from('comments').insert({ post_id: postId, uid: currentUser.id, text: dbText }); 
+        
         const myAvatar = userProfile && userProfile.photo_url ? `<img src="${userProfile.photo_url}">` : '<i class="fa-solid fa-user"></i>'; 
-        btn.closest('.comment-list').insertAdjacentHTML('beforeend', `<div class="comment"><div class="tweet-avatar">${myAvatar}</div><div class="comment-content"><div class="comment-text-wrap"><b>${userProfile.username}</b> ${finalMsg}</div><div class="reply-btn"><i class="fa-solid fa-reply"></i> Reply</div></div></div>`);
-        const countBtn = btn.closest(".tweet-content").querySelector(".comment .count"); if(countBtn) countBtn.innerText = parseInt(countBtn.innerText) + 1; 
-        btn.closest('.inline-reply-container').remove(); 
-    } catch(e) { showToast("Reply failed."); }
-}
+        
+        let newHtml = "";
+        if(!replyTarget) {
+            newHtml = `
+            <div class="comment-item main-comment">
+                <div class="tweet-avatar">${myAvatar}</div>
+                <div class="comment-body">
+                    <div class="comment-bubble"><b>${userProfile.username}</b> ${dbText}</div>
+                    <div class="comment-actions-row">
+                        <span class="comment-like-btn" onclick="likeComment(this)"><i class="fa-regular fa-heart"></i> <b class="c-likes-count">0</b></span>
+                        <span onclick="focusReplyInput('${postId}', '${userProfile.username}')"><i class="fa-solid fa-reply"></i> Reply</span>
+                    </div>
+                </div>
+            </div>`;
+        } else {
+            newHtml = `
+            <div class="replies-container">
+                <div class="reply-item">
+                    <div class="tweet-avatar">${myAvatar}</div>
+                    <div class="comment-body">
+                        <div class="comment-bubble reply-bubble"><b>${userProfile.username}</b> ${dbText}</div>
+                        <div class="comment-actions-row">
+                            <span class="comment-like-btn" onclick="likeComment(this)"><i class="fa-regular fa-heart"></i> <b class="c-likes-count">0</b></span>
+                            <span onclick="focusReplyInput('${postId}', '${userProfile.username}')"><i class="fa-solid fa-reply"></i> Reply</span>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        }
 
-async function addComment(inputEl, postId) {
-  const textVal = inputEl.value.trim(); if(!textVal) return; inputEl.disabled = true;
-  try {
-      await sb.from('comments').insert({ post_id: postId, uid: currentUser.id, text: textVal }); 
-      const myAvatar = userProfile && userProfile.photo_url ? `<img src="${userProfile.photo_url}">` : '<i class="fa-solid fa-user"></i>'; 
-      inputEl.closest('.comment-box').querySelector('.comment-list').insertAdjacentHTML('beforeend', `<div class="comment"><div class="tweet-avatar">${myAvatar}</div><div class="comment-content"><div class="comment-text-wrap"><b>${userProfile.username}</b> ${textVal}</div><div class="reply-btn"><i class="fa-solid fa-reply"></i> Reply</div></div></div>`);
-      const btn = inputEl.closest(".tweet-content").querySelector(".comment .count"); if(btn) btn.innerText = parseInt(btn.innerText) + 1; inputEl.value = "";
-  } catch(e) { showToast("Comment Error"); } inputEl.disabled = false;
+        let listEl = document.getElementById('cbox_' + postId).querySelector('.comment-list');
+        listEl.insertAdjacentHTML('beforeend', newHtml);
+        
+        const countBtn = document.getElementById('cbox_' + postId).parentElement.querySelector(".comment .count"); 
+        if(countBtn) countBtn.innerText = parseInt(countBtn.innerText) + 1; 
+        
+        inputEl.value = "";
+        cancelReply(postId); 
+        listEl.scrollTop = listEl.scrollHeight;
+
+    } catch(e) { showToast("Comment Error"); } 
+    inputEl.disabled = false;
+    inputEl.focus();
 }
 
 async function likePost(btn, postId, currentLikes) { if(btn.classList.contains("liked")) return; btn.classList.add("liked"); btn.querySelector('i').className = "fa-solid fa-heart"; btn.querySelector('span').innerText = currentLikes + 1; await sb.from('posts').update({likes: currentLikes + 1}).eq('id', postId); }
 
+// ================= EDIT PROFILE =================
 function openEditModal() { document.getElementById('editName').value = userProfile.username || ''; document.getElementById('editBio').value = userProfile.bio || ''; document.getElementById('editModal').style.display = 'flex'; }
 async function saveProfile() {
     const btn = document.getElementById('saveProfBtn'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...'; btn.disabled = true;
