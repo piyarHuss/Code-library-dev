@@ -1,6 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+     <!-- ========================================== -->
+     <!-- 🛑 1. TELEGRAM WEB APP SDK (MUST BE FIRST) 🛑 -->
+     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+     <!-- ========================================== -->
+
+     <!-- MONETAG SDK SCRIPT -->
+     <script src='//libtl.com/sdk.js' data-zone='10693042' data-sdk='show_10693042'></script>
+     
+     <!-- ADSGRAM SDK SCRIPT -->
+     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+
+     <!-- ========================================== -->
+     <!-- 🛑 2. RICHADS NETWORK SDK 🛑 -->
+     <script src="https://richinfo.co/richpartners/telegram/js/tg-ob.js"></script>
+     <script>
+       window.TelegramAdsController = new TelegramAdsController();
+       window.TelegramAdsController.initialize({
+         pubId: "997172",
+         appId: "6457",
+       });
+     </script>
+     <!-- ========================================== -->
+     
 <meta charset="UTF-8">
 <title>ℭØ𝔻ᗴ LIBRARY ᗪ𝚎𝕍🎭</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -9,18 +32,10 @@
 <!-- SUPABASE SDK SCRIPT -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<!-- ========================================== -->
-<!-- 🛑 TELEGRAM WEB APP SDK (AUTO LOGIN) 🛑 -->
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<!-- ========================================== -->
-
-<!-- 🛑 MONETAG MAIN SDK SCRIPT 🛑 -->
-<script src="https://alwingulla.com/88/tag.min.js" data-zone="10364706" async data-cfasync="false"></script>
-
 <script>
 // FAKE SCRIPT FOR TESTING BROWSER WITHOUT ADS
-if (typeof show_10364706 !== "function") {
-    window.show_10364706 = function() {
+if (typeof show_10693042 !== "function") {
+    window.show_10693042 = function() {
         return new Promise((resolve) => {
             console.log("Mock Monetag Ad playing...");
             setTimeout(() => { resolve(); }, 2000);
@@ -122,8 +137,8 @@ nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); wid
 .lock-text { font-size: 13px; font-weight: 700; color: #f43f5e; margin: 0; letter-spacing: 0.5px;}
 .progress-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);}
 .progress-fill { height: 100%; background: linear-gradient(90deg, #8b5cf6, #ec4899); width: 0%; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 10px;}
-.watch-ad-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 12px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; }
-.watch-ad-btn:hover { border-color: #0ea5e9; background: rgba(14, 165, 233, 0.15); box-shadow: 0 0 15px rgba(14,165,233,0.2);}
+.watch-ad-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 10px 5px; border-radius: 12px; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; flex: 1;}
+.watch-ad-btn:hover:not(:disabled) { border-color: #0ea5e9; background: rgba(14, 165, 233, 0.15); box-shadow: 0 0 15px rgba(14,165,233,0.2);}
 
 /* PLAY & EARN CODY BUTTON */
 .action-row { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: auto; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05);}
@@ -302,7 +317,13 @@ iframe { width: 100%; height: 100%; border: none; background: white;}
       </div>
   </div>
   
-  <div class="code-grid" id="codeStoreGrid"></div>
+  <div class="code-grid" id="codeStoreGrid">
+      <!-- Loading indicator for lazy loading -->
+      <div style="text-align:center; padding: 40px; grid-column: 1 / -1;">
+          <div class="spinner" style="margin: 0 auto; border-top-color: #8b5cf6;"></div>
+          <p style="color:var(--muted); margin-top:10px; font-size:14px;">Loading Projects...</p>
+      </div>
+  </div>
   
   <div class="empty-state" id="emptyStore" style="display:none;">
       <i class="fa-solid fa-box-open" id="emptyStoreIcon"></i>
@@ -314,7 +335,10 @@ iframe { width: 100%; height: 100%; border: none; background: white;}
 <!-- ================= INFO (POSTS FEED) ================= -->
 <section id="info" class="page">
   <div id="postFeed">
-    <div class="empty-state" id="emptyPosts"><i class="fa-solid fa-comment-slash"></i><h3>No posts yet</h3></div>
+      <div style="text-align:center; padding: 60px 20px;">
+          <div class="spinner" style="margin: 0 auto;"></div>
+          <p style="color:var(--muted); margin-top:10px; font-size:14px;">Fetching Posts...</p>
+      </div>
   </div>
 </section>
 
@@ -468,6 +492,22 @@ let userBalance = 0.000;
 let coinTimer = null;
 let currentSessionEarned = 0.000;
 
+// Lazy Loading Tracking Object
+let pageLoaded = {
+    home: false,
+    info: false,
+    profile: false
+};
+
+// Adsgram Controller Scope
+let adsgramController = null;
+function getAdsgramController() {
+    if (!adsgramController && window.Adsgram) {
+        adsgramController = window.Adsgram.init({ blockId: "int-24524" });
+    }
+    return adsgramController;
+}
+
 // ================= SUPABASE INITIALIZATION =================
 const SUPABASE_URL = "https://ubjfirquvrvughaxneyo.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InViamZpcnF1dnJ2dWdoYXhuZXlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk1MTMxOTYsImV4cCI6MjA4NTA4OTE5Nn0.T9wxE4vFLGQC-_gv_50fixnbAiHIvqHe40f0txuCyrQ"; 
@@ -482,6 +522,9 @@ let activeUserCode = "";
 let activeAdminCode = "";
 
 window.addEventListener('load', async () => {
+    // Try Pre-initializing Adsgram
+    getAdsgramController();
+    
     try {
         const { data: { session } } = await sb.auth.getSession();
         
@@ -546,20 +589,47 @@ function handleManualTelegramAuth() {
 
 async function logout() { await sb.auth.signOut(); window.location.reload(); }
 
-// ================= INIT APP =================
+
+// ================= HELPER FOR LAZY LOADING =================
+async function ensureUsersLoaded() {
+    if (allUsers.length === 0) {
+        const { data: uData } = await sb.from('users').select('uid, username, photo_url');
+        allUsers = uData || [];
+    }
+}
+
+// ================= INIT APP & LAZY LOADERS =================
 async function initApp() {
-    showToast("Syncing workspace...");
+    // Only load essentials on start
     await fetchUserProfile();
-    await fetchUserStats();
     
-    const { data: uData } = await sb.from('users').select('uid, username, photo_url');
-    allUsers = uData || [];
-    
-    const { data: cData } = await sb.from('comments').select('*').order('created_at', {ascending: true});
-    allComments = cData || [];
-    
-    await fetchCodeStore(); 
+    // Default Tab is Home, so load its content
+    await loadHomePage();
+}
+
+async function loadHomePage() {
+    if(pageLoaded.home) return;
+    await ensureUsersLoaded();
+    await fetchCodeStore();
+    pageLoaded.home = true;
+}
+
+async function loadFeedPage() {
+    if(pageLoaded.info) return;
+    await ensureUsersLoaded();
+    // Load comments only when user opens feed tab
+    if(allComments.length === 0) {
+        const { data: cData } = await sb.from('comments').select('*').order('created_at', {ascending: true});
+        allComments = cData || [];
+    }
     await fetchPostsFeed();
+    pageLoaded.info = true;
+}
+
+async function loadProfilePage() {
+    if(pageLoaded.profile) return;
+    await fetchUserStats();
+    pageLoaded.profile = true;
 }
 
 async function fetchUserProfile() {
@@ -584,6 +654,7 @@ async function fetchUserStats() {
         document.getElementById('profPostsCount').innerText = postCount || 0;
     } catch(e) {}
 }
+
 
 // ================= UPLOAD LOGIC =================
 function toggleUploadType() {
@@ -657,7 +728,7 @@ async function uploadContent() {
             
             await sb.from('user_ads').insert({ uid: currentUser.id, text: combinedText, ad_code: combinedSource, link: finalMedia, views_received: 0 });
             showToast("Project Published Successfully!", true);
-            await fetchCodeStore();
+            pageLoaded.home = false; // reset state so it fetches newly uploaded app
             openPage('home', document.querySelectorAll('.nav-item')[0]);
         } else {
             const textVal = document.getElementById('text').value.trim(); 
@@ -665,8 +736,13 @@ async function uploadContent() {
             const { data } = await sb.from('posts').insert({ uid: currentUser.id, text: textVal, image_url: finalMedia, likes: 0, views: 0 }).select();
             if(data && data[0]) { 
                 const html = generatePostHTML(data[0], userProfile || { username: 'User' }); 
-                document.getElementById('postFeed').insertAdjacentHTML('afterbegin', html); 
-                document.getElementById('emptyPosts').style.display = 'none'; 
+                // insertat top if feed is loaded
+                if (pageLoaded.info) {
+                    document.getElementById('postFeed').insertAdjacentHTML('afterbegin', html); 
+                    document.getElementById('emptyPosts').style.display = 'none'; 
+                } else {
+                    pageLoaded.info = false; // ensure feed fetches on open
+                }
             }
             showToast("Post Live!"); 
             openPage('info', document.querySelectorAll('.nav-item')[1]);
@@ -681,7 +757,7 @@ async function uploadContent() {
         document.getElementById('photo').value = ""; 
         document.getElementById('mediaUrl').value = ""; 
         document.getElementById('fileName').innerText = "Upload Photo/Video";
-        fetchUserStats();
+        pageLoaded.profile = false; // Refresh profile stats
         
     } catch(e) { 
         showToast(e.message); 
@@ -691,7 +767,7 @@ async function uploadContent() {
     btn.disabled = false;
 }
 
-// ================= CODE STORE & SEARCH =================
+// ================= CODE STORE & DUAL ADS UNLOCK SYSTEM =================
 async function fetchCodeStore() {
     try {
         const { data } = await sb.from('user_ads').select('*').order('created_at', {ascending: false});
@@ -712,18 +788,36 @@ async function fetchCodeStore() {
             let parts = (item.text || "").split("|||");
             let title = parts[0] || "Untitled Project"; let desc = parts[1] || "";
             
-            // Check if store media is video link or image link
             let isVidStore = item.link && (item.link.startsWith('data:video') || item.link.toLowerCase().endsWith('.mp4') || item.link.toLowerCase().endsWith('.webm'));
             let imgStr = item.link ? (isVidStore ? `<video src="${item.link}" muted loop autoplay playsinline style="width:100%;height:100%;object-fit:cover;"></video>` : `<img src="${item.link}">`) : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#334155;"><i class="fa-solid fa-image" style="font-size:40px;"></i></div>`;
             
             window.loadedCodes[item.id] = item.ad_code || "";
-            let progress = unlockData[item.id] || 0; let isUnlocked = progress >= 5; let progressPercent = (progress / 5) * 100;
+            
+            // Handle Old Int Progress and New Dual Ad Progress System
+            let savedData = unlockData[item.id];
+            let mProg = 0, aProg = 0;
+            if (typeof savedData === 'number') { 
+                mProg = Math.min(savedData, 5); 
+            } else if (savedData) { 
+                mProg = savedData.monetag || 0; 
+                aProg = savedData.adsgram || 0; 
+            }
+            
+            let isUnlocked = mProg >= 5 && aProg >= 5; 
+            let progressPercent = ((mProg + aProg) / 10) * 100;
             
             let actionUI = !isUnlocked ? `
                 <div class="lock-ui-container">
-                    <div class="lock-header"><div class="lock-icon-small"><i class="fa-solid fa-lock"></i></div><p class="lock-text">Requires 5 Ads</p></div>
+                    <div class="lock-header"><div class="lock-icon-small"><i class="fa-solid fa-lock"></i></div><p class="lock-text">Requires 5 Ads Each</p></div>
                     <div class="progress-bar"><div class="progress-fill" style="width:${progressPercent}%;"></div></div>
-                    <button class="watch-ad-btn" id="btn_${item.id}" onclick="watchStoreAd('${item.id}')"><i class="fa-solid fa-circle-play" style="color:var(--primary)"></i> Watch Ad (${progress}/5)</button>
+                    <div style="display:flex; gap:8px; width:100%;">
+                        <button class="watch-ad-btn" id="btn_m_${item.id}" onclick="watchMonetagAd('${item.id}')" ${mProg >= 5 ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}>
+                            <i class="fa-solid fa-circle-play" style="color:#ec4899"></i> Monetag (${mProg}/5)
+                        </button>
+                        <button class="watch-ad-btn" id="btn_a_${item.id}" onclick="watchAdsgramAd('${item.id}')" ${aProg >= 5 ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}>
+                            <i class="fa-solid fa-circle-play" style="color:#8b5cf6"></i> Adsgram (${aProg}/5)
+                        </button>
+                    </div>
                 </div>` : `
                 <div class="action-row">
                     <button class="btn-preview" onclick="openStorePreview('${item.id}')"><div class="cody-icon"><i class="fa-solid fa-code"></i></div> Play & Earn Cody</button>
@@ -749,20 +843,65 @@ function filterStore() {
     document.getElementById('emptyStore').style.display = visibleCount === 0 ? 'flex' : 'none';
 }
 
-function watchStoreAd(appId) {
-    const btn = document.getElementById(`btn_${appId}`);
-    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Loading...`; btn.disabled = true;
+// ADS WATCHING LOGIC
+function watchMonetagAd(appId) {
+    const btn = document.getElementById(`btn_m_${appId}`);
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Wait...`; btn.disabled = true;
     try {
-        if(typeof show_10364706 === 'function') { show_10364706().then(() => { handleStoreAdSuccess(appId); }).catch(() => { showToast("Ad failed to load."); fetchCodeStore(); }); } 
-        else { showToast("Test Mode: Ad Playing...", true); setTimeout(() => { handleStoreAdSuccess(appId); }, 2000); }
+        if(typeof show_10693042 === 'function') { 
+            show_10693042().then(() => { 
+                handleAdSuccess(appId, 'monetag'); 
+            }).catch(() => { 
+                showToast("Monetag Ad skipped/failed.", false); 
+                fetchCodeStore(); 
+            }); 
+        } else { 
+            showToast("Test Mode: Monetag Playing...", true); 
+            setTimeout(() => { handleAdSuccess(appId, 'monetag'); }, 2000); 
+        }
     } catch (e) { fetchCodeStore(); }
 }
 
-function handleStoreAdSuccess(appId) {
+function watchAdsgramAd(appId) {
+    const btn = document.getElementById(`btn_a_${appId}`);
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Wait...`; btn.disabled = true;
+    
+    const controller = getAdsgramController();
+    try {
+        if(controller) {
+            controller.show().then((result) => {
+                handleAdSuccess(appId, 'adsgram');
+            }).catch((err) => {
+                showToast("Adsgram Ad skipped/failed.", false);
+                fetchCodeStore();
+            });
+        } else {
+            showToast("Test Mode: Adsgram Playing...", true);
+            setTimeout(() => { handleAdSuccess(appId, 'adsgram'); }, 2000);
+        }
+    } catch (e) { fetchCodeStore(); }
+}
+
+function handleAdSuccess(appId, type) {
     let unlockData = JSON.parse(localStorage.getItem('storeUnlocks')) || {};
-    let progress = unlockData[appId] || 0; progress++; unlockData[appId] = progress;
+    let savedData = unlockData[appId];
+    
+    // Migrate old data if present
+    if (typeof savedData === 'number') {
+        unlockData[appId] = { monetag: Math.min(savedData, 5), adsgram: 0 };
+    } else if (!savedData) {
+        unlockData[appId] = { monetag: 0, adsgram: 0 };
+    }
+    
+    unlockData[appId][type]++;
     localStorage.setItem('storeUnlocks', JSON.stringify(unlockData));
-    if (progress >= 5) showToast("🎉 Project Unlocked!", true); else showToast(`Ad Watched! (${progress}/5)`);
+    
+    if (unlockData[appId].monetag >= 5 && unlockData[appId].adsgram >= 5) {
+        showToast("🎉 Project Unlocked!", true);
+    } else {
+        let count = unlockData[appId][type];
+        showToast(`Ad Watched! (${count}/5)`);
+    }
     fetchCodeStore(); 
 }
 
@@ -833,7 +972,6 @@ function generatePostHTML(p, userObj) {
     
     let mediaHtml = '';
     if(p.image_url) {
-        // Updated to support direct link video like .mp4, .webm
         let isVideo = p.image_url.startsWith('data:video') || p.image_url.toLowerCase().endsWith('.mp4') || p.image_url.toLowerCase().endsWith('.webm');
         if(isVideo) {
             mediaHtml = `<video class="feed-media" controls preload="metadata"><source src="${p.image_url}"></video>`;
@@ -1056,12 +1194,19 @@ function showToast(msg, isSuccess = false) {
     clearTimeout(toastTimeout); toastTimeout = setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
+// LAZY LOADING OPEN PAGE LOGIC
 function openPage(id, el) { 
+    // Handle UI Activation
     document.querySelectorAll(".page").forEach(p => p.classList.remove("active")); 
     document.getElementById(id).classList.add("active"); 
     document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active")); 
     el.classList.add("active"); 
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Call Lazy Loaders when user taps tab
+    if (id === 'home') loadHomePage();
+    if (id === 'info') loadFeedPage();
+    if (id === 'profile') loadProfilePage();
 }
 </script>
 
