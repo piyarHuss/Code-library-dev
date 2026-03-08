@@ -521,7 +521,17 @@ let allComments = [];
 let activeUserCode = "";
 let activeAdminCode = "";
 
-window.addEventListener('load', async () => {
+// ================= FAST LOADING FIX =================
+document.addEventListener('DOMContentLoaded', async () => {
+    // Failsafe timeout: hide loader after 4 seconds max
+    setTimeout(() => {
+        const loader = document.getElementById('loadingOverlay');
+        if (loader && loader.style.display !== 'none') {
+            loader.style.display = 'none';
+            if (!currentUser) document.getElementById('authOverlay').style.display = 'flex';
+        }
+    }, 4000);
+
     // Try Pre-initializing Adsgram
     getAdsgramController();
     
@@ -886,16 +896,21 @@ function handleAdSuccess(appId, type) {
     let unlockData = JSON.parse(localStorage.getItem('storeUnlocks')) || {};
     let savedData = unlockData[appId];
     
-    // Migrate old data if present
+    // Migrate old data if present or initialize
     if (typeof savedData === 'number') {
         unlockData[appId] = { monetag: Math.min(savedData, 5), adsgram: 0 };
     } else if (!savedData) {
         unlockData[appId] = { monetag: 0, adsgram: 0 };
     }
     
-    unlockData[appId][type]++;
+    // Increment only if less than 5
+    if (unlockData[appId][type] < 5) {
+        unlockData[appId][type]++;
+    }
+    
     localStorage.setItem('storeUnlocks', JSON.stringify(unlockData));
     
+    // Strict check: Both must be exactly 5
     if (unlockData[appId].monetag >= 5 && unlockData[appId].adsgram >= 5) {
         showToast("🎉 Project Unlocked!", true);
     } else {
