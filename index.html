@@ -65,18 +65,6 @@ if (typeof show_10693042 !== "function") {
 }
 body { background: radial-gradient(circle at top left, #1a1525 0%, var(--bg) 100%); color: var(--text); padding-bottom: 100px; padding-top: 70px; min-height: 100vh; overflow-x: hidden; }
 
-/* ================= AUTHENTICATION OVERLAY ================= */
-#authOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11, 17, 32, 0.95); backdrop-filter: blur(10px); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
-.auth-box { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 35px 25px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
-.auth-box h2 { color: white; margin-bottom: 5px; font-size: 26px; font-weight: 800; }
-.auth-box h2 span { background: linear-gradient(45deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.auth-box p { color: var(--muted); font-size: 14px; margin-bottom: 25px; }
-.auth-error { color: #f87171; background: rgba(248, 113, 113, 0.1); padding: 12px; border-radius: 12px; font-size: 13px; margin-bottom: 20px; display: none; border: 1px solid rgba(248, 113, 113, 0.2); }
-.tg-input-wrapper { display: flex; align-items: center; gap: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 14px; padding: 0 16px; height: 50px; margin-bottom: 20px; transition: 0.3s; }
-.tg-input-wrapper:focus-within { border-color: #3b82f6; background: rgba(59, 130, 246, 0.05); }
-.tg-input-wrapper i { color: #3b82f6; font-size: 18px; }
-.tg-input-wrapper input { background: transparent !important; border: none !important; color: white !important; width: 100%; height: 100%; outline: none; font-size: 15px; padding: 0 !important; margin: 0 !important; }
-
 /* LOADING SCREEN */
 #loadingOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; }
 .spinner { width: 50px; height: 50px; border: 5px solid rgba(255,255,255,0.1); border-top-color: #3b82f6; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px; }
@@ -214,7 +202,6 @@ nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); wid
 .profile-handle-text { background: linear-gradient(45deg, #3b82f6, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 15px; font-weight: 700; text-align: center; margin-bottom: 10px;}
 .profile-bio { margin-top: 10px; font-size: 14px; color: #cbd5e1; line-height: 1.6; text-align: center; max-width: 90%; }
 .profile-action-btns { display: flex; gap: 15px; width: 100%; justify-content: center; margin-top: 25px; margin-bottom: 20px; }
-.edit-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 12px 0; border-radius: 30px; font-size: 14px; font-weight: 700; cursor: pointer; transition: 0.3s; flex: 1; max-width: 150px; }
 .logout-btn { background: rgba(248, 113, 113, 0.1); color: #f87171; border: 1px solid rgba(248, 113, 113, 0.2); padding: 12px 0; border-radius: 30px; font-size: 14px; font-weight: 700; cursor: pointer; flex: 1; max-width: 150px; transition: 0.3s;}
 
 /* Cody Wallet Card */
@@ -303,23 +290,6 @@ iframe { width: 100%; height: 100%; border: none; background: white;}
 <div id="loadingOverlay">
     <div class="spinner"></div>
     <h3 style="font-size:18px; font-weight:700;">Loading App...</h3>
-</div>
-
-<!-- TELEGRAM LOGIN SCREEN -->
-<div id="authOverlay">
-    <div class="auth-box">
-        <i class="fa-brands fa-telegram" style="font-size: 55px; color: #3b82f6; margin-bottom: 15px; filter: drop-shadow(0 0 15px rgba(59,130,246,0.5));"></i>
-        <h2 id="authTitle">Enter <span>Telegram</span></h2>
-        <p id="authDesc">No password needed. Just your username!</p>
-        <div id="authError" class="auth-error"></div>
-        
-        <div class="tg-input-wrapper">
-            <i class="fa-solid fa-at"></i>
-            <input type="text" id="tgUsername" placeholder="telegram_username" onkeydown="if(event.key==='Enter'){handleManualTelegramAuth()}">
-        </div>
-        
-        <button id="authBtn" class="btn-primary" onclick="handleManualTelegramAuth()">Continue to App <i class="fa-solid fa-arrow-right"></i></button>
-    </div>
 </div>
 
 <div id="toast" class="toast"><i class="fa-solid fa-circle-info"></i> <span id="toastMsg">Message</span></div>
@@ -445,7 +415,6 @@ iframe { width: 100%; height: 100%; border: none; background: white;}
       </div>
       
       <div class="profile-action-btns">
-          <button class="edit-btn" onclick="openEditModal()"><i class="fa-solid fa-pen"></i> Edit Profile</button>
           <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
       </div>
       
@@ -457,18 +426,6 @@ iframe { width: 100%; height: 100%; border: none; background: white;}
     </div>
   </div>
 </section>
-
-<!-- EDIT PROFILE MODAL -->
-<div class="modal-overlay" id="editModal">
-  <div class="modal-content">
-    <div class="modal-header"><span>Edit Profile</span><i class="fa-solid fa-xmark" style="cursor:pointer; background:rgba(255,255,255,0.1); width:30px; height:30px; display:flex; align-items:center; justify-content:center; border-radius:50%;" onclick="this.closest('.modal-overlay').style.display='none'"></i></div>
-    <label class="file-upload-label" for="editPhoto"><i class="fa-solid fa-camera"></i> <span id="editFileName">Change Picture</span></label>
-    <input type="file" id="editPhoto" accept="image/*" onchange="document.getElementById('editFileName').innerText = this.files[0] ? this.files[0].name : 'Change Picture'">
-    <input id="editName" placeholder="Display Name">
-    <textarea id="editBio" placeholder="Short Bio"></textarea>
-    <button class="btn-primary" id="saveProfBtn" onclick="saveProfile()">Save Changes</button>
-  </div>
-</div>
 
 <!-- PROFESSIONAL WITHDRAWAL MODAL -->
 <div class="modal-overlay" id="withdrawModal">
@@ -591,35 +548,24 @@ let activeUserCode = "";
 let activeAdminCode = "";
 
 document.addEventListener('DOMContentLoaded', async () => {
-    setTimeout(() => {
-        const loader = document.getElementById('loadingOverlay');
-        if (loader && loader.style.display !== 'none') {
-            loader.style.display = 'none';
-            if (!currentUser) document.getElementById('authOverlay').style.display = 'flex';
-        }
-    }, 4000);
-
     getAdsgramController();
     
     try {
-        const { data: { session } } = await sb.auth.getSession();
-        if(session) { 
-            currentUser = session.user; 
-            document.getElementById('loadingOverlay').style.display = 'none';
-            initApp(); 
-            return;
-        } 
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
         
-        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
-            const tgUser = window.Telegram.WebApp.initDataUnsafe.user;
-            await processTelegramLogin(tgUser.username || `user${tgUser.id}`, tgUser.first_name, tgUser.photo_url);
+        const tgUser = tg.initDataUnsafe.user;
+        
+        if (tgUser) {
+            // AUTO LOGIN WITH TELEGRAM DATA
+            await processTelegramLogin(tgUser.username || `user_${tgUser.id}`, tgUser.first_name, tgUser.photo_url);
         } else {
-            document.getElementById('loadingOverlay').style.display = 'none';
-            document.getElementById('authOverlay').style.display = 'flex';
+            // Browser Test Fallback
+            document.getElementById('loadingOverlay').innerHTML = "<h3>Please open in Telegram</h3>";
         }
     } catch(e) {
-        document.getElementById('loadingOverlay').style.display = 'none';
-        document.getElementById('authOverlay').style.display = 'flex';
+        document.getElementById('loadingOverlay').innerHTML = "<h3>Connection Error</h3>";
     }
 });
 
@@ -627,7 +573,7 @@ async function processTelegramLogin(username, firstName, photoUrl) {
     let cleanUsername = username.replace('@', '').trim().toLowerCase();
     const dummyEmail = `${cleanUsername}@telegram.app`;
     const dummyPassword = `TgUser_${cleanUsername}_2024!`;
-    const autoAvatar = photoUrl || `https://ui-avatars.com/api/?name=${cleanUsername}&background=random&color=fff&size=200&bold=true`;
+    const autoAvatar = photoUrl || `https://ui-avatars.com/api/?name=${firstName}&background=random&color=fff&size=200&bold=true`;
 
     try {
         let { data, error } = await sb.auth.signInWithPassword({ email: dummyEmail, password: dummyPassword });
@@ -636,28 +582,19 @@ async function processTelegramLogin(username, firstName, photoUrl) {
             if(signUpError) throw signUpError;
             currentUser = signUpData.user;
             await sb.from('users').insert({ 
-                uid: currentUser.id, email: dummyEmail, username: cleanUsername, photo_url: autoAvatar, balance: 0.00, followers: 0, following: 0 
+                uid: currentUser.id, email: dummyEmail, username: firstName, photo_url: autoAvatar, balance: 0.00, followers: 0, following: 0 
             });
         } else {
             currentUser = data.user;
+            // UPDATE LATEST TELEGRAM INFO
+            await sb.from('users').update({ username: firstName, photo_url: autoAvatar }).eq('uid', currentUser.id);
         }
+        
         document.getElementById('loadingOverlay').style.display = 'none';
-        document.getElementById('authOverlay').style.display = 'none'; 
         initApp();
     } catch(e) { 
-        document.getElementById('loadingOverlay').style.display = 'none';
-        document.getElementById('authError').innerText = "Login failed. Try again."; 
-        document.getElementById('authError').style.display = "block";
-        document.getElementById('authOverlay').style.display = 'flex';
+        document.getElementById('loadingOverlay').innerHTML = "<h3>Login failed. Try again inside Telegram.</h3>";
     }
-}
-
-function handleManualTelegramAuth() {
-    let tgName = document.getElementById('tgUsername').value;
-    if(!tgName) { document.getElementById('authError').innerText = "Please enter username"; document.getElementById('authError').style.display="block"; return; }
-    document.getElementById('authBtn').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Connecting...';
-    document.getElementById('authBtn').disabled = true;
-    processTelegramLogin(tgName, tgName, null);
 }
 
 async function logout() { await sb.auth.signOut(); window.location.reload(); }
@@ -740,7 +677,7 @@ async function loadProfilePage() {
     if(pageLoaded.profile) return;
     await fetchUserStats();
     await checkAdminSettings();
-    await fetchWithdrawalHistory(); // New
+    await fetchWithdrawalHistory();
     pageLoaded.profile = true;
 }
 
@@ -786,7 +723,6 @@ function switchWithdrawMethod(type) {
     document.getElementById(`${type}InputGroup`).classList.add('active');
 }
 
-// NEW: FETCH WITHDRAWAL HISTORY
 async function fetchWithdrawalHistory() {
     const historyList = document.getElementById('withdrawalHistoryList');
     try {
@@ -862,7 +798,6 @@ async function submitWithdrawal() {
         showToast("Withdrawal Request Sent!", true);
         document.getElementById('withdrawModal').style.display = 'none';
         
-        // Refresh history
         fetchWithdrawalHistory();
         
     } catch(e) {
@@ -873,7 +808,7 @@ async function submitWithdrawal() {
     }
 }
 
-// ================= ALL OTHER EXISTING LOGIC =================
+// ================= UPLOAD LOGIC =================
 function toggleUploadType() {
     const isCode = (document.getElementById('uploadType').value === 'code');
     document.getElementById('text').style.display = isCode ? 'none' : 'block';
@@ -959,6 +894,7 @@ async function uploadContent() {
     btn.disabled = false;
 }
 
+// ================= STORE LOGIC =================
 async function fetchCodeStore() {
     try {
         const { data } = await sb.from('user_ads').select('*').order('created_at', {ascending: false});
@@ -1076,6 +1012,7 @@ function copySpecificCode(type) {
     navigator.clipboard.writeText(codeToCopy).then(() => showToast("Copied!", true));
 }
 
+// ================= FEED LOGIC =================
 function generatePostHTML(p, userObj) {
     let u = userObj || { username: 'User', photo_url: '' }; 
     const avatar = u.photo_url ? `<img src="${u.photo_url}">` : `<i class="fa-solid fa-user"></i>`;
@@ -1127,17 +1064,7 @@ async function submitNewComment(inputEl, postId) {
 
 async function likePost(btn, postId, currentLikes) { if(btn.classList.contains("liked")) return; btn.classList.add("liked"); btn.querySelector('i').className = "fa-solid fa-heart"; btn.querySelector('span').innerText = currentLikes + 1; await sb.from('posts').update({likes: currentLikes + 1}).eq('id', postId); }
 
-function openEditModal() { document.getElementById('editName').value = userProfile.username; document.getElementById('editBio').value = userProfile.bio || ''; document.getElementById('editModal').style.display = 'flex'; }
-async function saveProfile() {
-    const btn = document.getElementById('saveProfBtn'); btn.innerHTML = 'Saving...';
-    try {
-        let updateData = { username: document.getElementById('editName').value, bio: document.getElementById('editBio').value };
-        const photoFile = document.getElementById('editPhoto').files[0]; if(photoFile) { updateData.photo_url = await compressImage(photoFile); } 
-        await sb.from('users').update(updateData).eq('uid', currentUser.id);
-        showToast("Profile Updated!", true); location.reload();
-    } catch(e) { showToast("Failed"); }
-}
-
+// ================= UTILS =================
 let toastTimeout;
 function showToast(msg, isSuccess = false) {
     const toast = document.getElementById('toast'); 
