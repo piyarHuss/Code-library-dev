@@ -1,1089 +1,322 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-     <!-- ========================================== -->
-     <!-- 🛑 1. TELEGRAM WEB APP SDK (MUST BE FIRST) -->
+     <!-- SDKs -->
      <script src="https://telegram.org/js/telegram-web-app.js"></script>
-     <!-- ========================================== -->
-
-     <!-- MONETAG SDK SCRIPT -->
      <script src='//libtl.com/sdk.js' data-zone='10693042' data-sdk='show_10693042'></script>
-     
-     <!-- ADSGRAM SDK SCRIPT -->
      <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
-
-     <!-- ========================================== -->
-     <!-- 🛑 2. RICHADS NETWORK SDK -->
      <script src="https://richinfo.co/richpartners/telegram/js/tg-ob.js"></script>
      <script>
        window.TelegramAdsController = new TelegramAdsController();
-       window.TelegramAdsController.initialize({
-         pubId: "997172",
-         appId: "6457",
-       });
+       window.TelegramAdsController.initialize({ pubId: "997172", appId: "6457" });
      </script>
      
 <meta charset="UTF-8">
-<title>ℭØ𝔻ᗴ LIBRARY ᗪ𝚎𝕍🎭</title>
+<title>DealFlow Premium</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<!-- SUPABASE SDK SCRIPT -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script>
-// FAKE SCRIPT FOR TESTING BROWSER WITHOUT ADS
-if (typeof show_10693042 !== "function") {
-    window.show_10693042 = function() {
-        return new Promise((resolve) => {
-            console.log("Mock Monetag Ad playing...");
-            setTimeout(() => { resolve(); }, 2000);
-        });
-    };
-}
-</script>
-
 <style>
-/* ================= RESET & VARIABLES ================= */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+/* ================= AAPKA ORIGINAL LOOKS ================= */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
 :root { 
-    --bg: #0b1120; 
-    --card: #141e33; 
-    --border: rgba(255, 255, 255, 0.08); 
-    --text: #f8fafc; 
-    --muted: #94a3b8; 
-    --primary: #ec4899; 
-    --primary-hover: #db2777; 
-    --accent: #8b5cf6;
-    --glass: rgba(20, 30, 51, 0.7); 
-    --cody-grad: linear-gradient(135deg, #0ea5e9, #2563eb); 
-    --cody-glow: rgba(14, 165, 233, 0.5);
-    --ton: #0088cc;
-    --upi: #ff9933;
+    --bg: #050505; --card: rgba(255, 255, 255, 0.06); 
+    --glass-border: rgba(255, 255, 255, 0.1); --text: #ffffff; 
+    --muted: #94a3b8; --accent: #007AFF; --success: #22c55e;
+    --gold: #FFD700; --primary-grad: linear-gradient(135deg, #007AFF, #00C6FF);
 }
-body { background: radial-gradient(circle at top left, #1a1525 0%, var(--bg) 100%); color: var(--text); padding-bottom: 100px; padding-top: 70px; min-height: 100vh; overflow-x: hidden; }
 
-/* LOADING SCREEN */
-#loadingOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; }
-.spinner { width: 50px; height: 50px; border: 5px solid rgba(255,255,255,0.1); border-top-color: #3b82f6; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+body { background: var(--bg); color: var(--text); padding-bottom: 100px; padding-top: 70px; overflow-x: hidden; }
+
+/* LOADING */
+#loadingOverlay { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.spinner { width: 30px; height: 30px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* CODY LOGO CSS */
-.cody-icon { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; background: var(--cody-grad); border-radius: 6px; color: white; font-size: 10px; font-weight: 900; box-shadow: 0 0 12px var(--cody-glow); border: 1px solid rgba(255,255,255,0.2); }
-
 /* TOP BAR */
-.topbar { position: fixed; top: 0; left: 0; width: 100%; padding: 15px 20px; background: var(--glass); backdrop-filter: blur(15px); border-bottom: 1px solid var(--border); z-index: 100; display: flex; justify-content: space-between; align-items: center; }
-.topbar .title { font-size: 20px; font-weight: 800; background: linear-gradient(45deg, #0ea5e9, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
-.top-stats span { font-size: 15px; font-weight: 800; background: rgba(14, 165, 233, 0.1); padding: 6px 14px; border-radius: 30px; color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.3); box-shadow: 0 0 15px rgba(14, 165, 233, 0.1); display: flex; align-items: center; gap: 8px; transition: 0.3s;}
+.topbar { position: fixed; top: 0; left: 0; width: 100%; padding: 15px 20px; background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); z-index: 100; display: flex; justify-content: space-between; align-items: center; }
+.topbar .logo { font-size: 20px; font-weight: 800; background: var(--primary-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.balance-pill { background: var(--card); padding: 6px 14px; border-radius: 20px; border: 1px solid var(--glass-border); display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 14px; }
 
-/* FLOATING NAV */
-nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 450px; height: 70px; background: rgba(20, 30, 51, 0.85); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 35px; display: flex; justify-content: space-around; align-items: center; z-index: 100; box-shadow: 0 15px 35px rgba(0,0,0,0.5); padding: 0 10px; }
-.nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 11px; font-weight: 600; color: var(--muted); cursor: pointer; transition: all 0.3s ease; position: relative; height: 100%; }
-.nav-item i { font-size: 20px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-.nav-item.active { color: white; }
-.nav-item.active i { transform: translateY(-4px) scale(1.1); color: var(--primary); text-shadow: 0 0 15px rgba(236, 72, 153, 0.5); }
-.nav-item.active::after { content: ''; position: absolute; bottom: 12px; width: 5px; height: 5px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 10px var(--primary); }
+/* STORE GRID */
+.store-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 15px; }
+.app-card { background: var(--card); border-radius: 24px; padding: 12px; border: 1px solid var(--glass-border); transition: 0.2s; position: relative; }
+.app-icon { width: 100%; aspect-ratio: 1/1; border-radius: 18px; object-fit: cover; margin-bottom: 10px; }
+.app-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.badge-game { position: absolute; top: 18px; right: 18px; background: var(--gold); color: black; font-size: 8px; padding: 2px 6px; border-radius: 6px; font-weight: 900; }
 
-/* TOAST */
-.toast { position: fixed; bottom: 100px; left: 50%; transform: translate(-50%, 50px); background: #1e293b; border: 1px solid var(--border); color: white; padding: 12px 24px; border-radius: 30px; font-size: 13px; font-weight: 600; opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10000; box-shadow: 0 10px 25px rgba(0,0,0,0.5); pointer-events: none; white-space: nowrap; display: flex; align-items: center; gap: 8px;}
-.toast i { font-size: 16px; }
-.toast.show { transform: translate(-50%, 0); opacity: 1; }
+/* CATEGORY CHIPS */
+.category-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 10px 20px; scrollbar-width: none; }
+.chip { padding: 8px 18px; background: var(--card); border-radius: 12px; border: 1px solid var(--glass-border); font-size: 13px; white-space: nowrap; cursor: pointer; }
+.chip.active { background: var(--accent); border-color: var(--accent); font-weight: 700; }
 
-/* UI ELEMENTS */
-.empty-state { text-align: center; padding: 60px 20px; color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 10px;}
-.empty-state i { font-size: 50px; background: -webkit-linear-gradient(45deg, var(--muted), #334155); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 5px;}
-.empty-state h3 { font-weight: 600; color: white; }
-.page { display: none; padding: 16px; max-width: 600px; margin: 0 auto; animation: fadeIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); }
-.page.active { display: block; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+/* NAVIGATION */
+nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; height: 70px; background: rgba(20, 20, 20, 0.85); backdrop-filter: blur(25px); border-radius: 24px; display: flex; justify-content: space-around; align-items: center; z-index: 100; border: 1px solid var(--glass-border); }
+.nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #64748b; font-size: 11px; font-weight: 600; cursor: pointer; }
+.nav-item.active { color: var(--accent); }
+.nav-item i { font-size: 20px; }
 
-.card, .tweet-card { background: linear-gradient(145deg, var(--card), #0f1524); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); }
-
-/* CODE STORE UI */
-.store-header-wrap { display: flex; flex-direction: column; margin-bottom: 25px; }
-.search-box { display: flex; align-items: center; gap: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 16px; padding: 0 16px; height: 50px; transition: 0.3s; box-shadow: inset 0 2px 5px rgba(0,0,0,0.2); }
-.search-box:focus-within { border-color: var(--accent); background: rgba(139, 92, 246, 0.05); box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1); }
-.search-box i { color: var(--muted); font-size: 16px; }
-.search-box input { background: transparent !important; border: none !important; color: white !important; width: 100%; height: 100%; outline: none; font-size: 14.5px; padding: 0 !important; margin: 0 !important; box-shadow: none !important; }
-
-.code-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 30px; }
-.app-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.3); transition: all 0.3s ease; display: flex; flex-direction: column;}
-.app-card:hover { transform: translateY(-5px); border-color: rgba(14, 165, 233, 0.4); box-shadow: 0 15px 35px rgba(14, 165, 233, 0.15); }
-.app-img-box { width: 100%; background: #0b1120; position: relative; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: center; overflow: hidden; min-height: 160px; padding: 10px 0;}
-.app-img-box img, .app-img-box video { width: 100%; height: auto; max-height: 220px; object-fit: contain; transition: 0.3s; display: block;}
-.app-card:hover .app-img-box img { transform: scale(1.05); }
-.app-author-badge { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); color: white; font-size: 11px; font-weight: 500; padding: 5px 10px; border-radius: 12px; display: flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,0.1); z-index: 5;}
-.app-author-badge img { width: 16px; height: 16px; border-radius: 50%; object-fit: cover; }
-.app-info { padding: 16px; text-align: center; flex: 1; display: flex; flex-direction: column; justify-content: space-between;}
-.app-title { font-size: 17px; font-weight: 700; color: white; margin-bottom: 6px; letter-spacing: -0.3px;}
-.app-desc { font-size: 13px; color: var(--muted); margin-bottom: 18px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; }
-
-.lock-ui-container { margin-top: auto; padding-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1); display: flex; flex-direction: column; gap: 12px; }
-.lock-header { display: flex; align-items: center; justify-content: center; gap: 8px; }
-.lock-icon-small { width: 28px; height: 28px; background: linear-gradient(135deg, #f43f5e, #ec4899); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: white; box-shadow: 0 0 15px rgba(236, 72, 153, 0.5); }
-.lock-text { font-size: 13px; font-weight: 700; color: #f43f5e; margin: 0; letter-spacing: 0.5px;}
-.progress-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);}
-.progress-fill { height: 100%; background: linear-gradient(90deg, #8b5cf6, #ec4899); width: 0%; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 10px;}
-.watch-ad-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 10px 5px; border-radius: 12px; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; flex: 1;}
-.watch-ad-btn:hover:not(:disabled) { border-color: #0ea5e9; background: rgba(14, 165, 233, 0.15); box-shadow: 0 0 15px rgba(14,165,233,0.2);}
-
-/* PLAY & EARN CODY BUTTON */
-.action-row { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: auto; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05);}
-.btn-preview { width: 100%; background: var(--cody-grad); border: 1px solid rgba(255,255,255,0.2); color: white; height: 44px; border-radius: 12px; font-size: 14px; font-weight: 800; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px var(--cody-glow); display: flex; justify-content: center; align-items: center; gap: 8px;}
-.btn-preview:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(14, 165, 233, 0.6); }
-.btn-code { width: 100%; background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none; color: white; height: 42px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);}
-.btn-code:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6); }
-
-/* ================= POST FEED ================= */
-.avatar, .tweet-avatar { width: 46px; height: 46px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; color: var(--muted); border: 2px solid rgba(255,255,255,0.05); }
-.avatar img, .tweet-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.tweet-card { display: flex; gap: 15px; }
-.tweet-content { flex: 1; min-width: 0; }
-.tweet-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-.tweet-header .name { font-weight: 700; color: white; font-size: 16px; letter-spacing: -0.3px;}
-.tweet-header .handle { color: var(--muted); font-size: 13px; font-weight: 500;}
-.tweet-text { font-size: 15px; color: #e2e8f0; line-height: 1.6; word-wrap: break-word; font-weight: 400;}
-
-.tweet-actions { display: flex; justify-content: space-between; max-width: 85%; margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px; }
-.t-action-btn { display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--muted); font-size: 14px; font-weight: 600; transition:0.3s; padding: 5px 10px; border-radius: 20px;}
-.t-action-btn:hover { background: rgba(255,255,255,0.05); color: white; }
-.t-action-btn.like:hover, .t-action-btn.liked { color: #f43f5e; }
-.t-action-btn.liked i { color: #f43f5e; text-shadow: 0 0 10px rgba(244,63,94,0.5);}
-
-/* ================= NEW MEDIA (VIDEO/IMAGE) STYLES ================= */
-.feed-media { width: 100%; max-height: 400px; object-fit: cover; border-radius: 16px; margin-top: 12px; background: #000; border: 1px solid var(--border); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-
-/* ================= PROFESSIONAL COMMENTS & REPLIES ================= */
-.comment-box { width: 100%; margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px; display: none; }
-.comment-list { max-height: 400px; overflow-y: auto; padding-right: 5px; scroll-behavior: smooth;}
-.comment-list::-webkit-scrollbar { width: 4px; }
-.comment-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
-
-.comment-item { display: flex; gap: 10px; margin-bottom: 15px; width: 100%; }
-.comment-item .tweet-avatar { width: 32px; height: 32px; border: none; flex-shrink: 0; }
-.comment-body { flex: 1; min-width: 0; }
-
-.comment-bubble { font-size: 14px; color: #e2e8f0; line-height: 1.5; word-wrap: break-word; }
-.comment-bubble b { color: white; margin-right: 5px; font-size: 14px; font-weight: 700; cursor: pointer; }
-.comment-bubble .tagged-user { color: var(--accent); font-weight: 600; }
-
-.comment-actions-row { display: flex; align-items: center; gap: 15px; margin-top: 5px; font-size: 12px; color: var(--muted); font-weight: 600; }
-.comment-actions-row span { cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 5px;}
-.comment-actions-row span:hover { color: white; }
-.comment-like-btn.liked { color: #f43f5e !important; }
-.comment-like-btn.liked i { font-weight: 900; }
-
-.replies-container { margin-left: 32px; margin-top: 5px; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 12px; margin-bottom: 15px; }
-.reply-item { display: flex; gap: 8px; margin-bottom: 10px; }
-.reply-item .tweet-avatar { width: 24px; height: 24px; }
-.reply-bubble { font-size: 13.5px; }
-.reply-bubble b { font-size: 13px; }
-
-.comment-input-wrapper { display: flex; flex-direction: column; position: sticky; bottom: 0; background: var(--card); padding: 12px 0 5px 0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 10px; width: 100%;}
-.reply-indicator { display: none; justify-content: space-between; align-items: center; font-size: 12px; color: var(--accent); padding: 0 5px 8px 5px; font-weight: 600;}
-.reply-indicator i { cursor: pointer; color: var(--muted); font-size: 14px; transition: 0.2s; padding: 5px;}
-.reply-indicator i:hover { color: #f87171; }
-.comment-input-row { display: flex; gap: 10px; align-items: center; width: 100%; }
-.comment-input-row .tweet-avatar { width: 36px; height: 36px; flex-shrink: 0; }
-.comment-input-box { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 24px; display: flex; align-items: center; padding: 2px 15px; min-width: 0; }
-.comment-input-box input { flex: 1; border: none !important; background: transparent !important; margin: 0 !important; padding: 10px 0 !important; font-size: 14px; color: white; outline: none; box-shadow: none !important; min-width: 0;}
-.comment-submit-btn { background: transparent; border: none; color: var(--primary); font-size: 16px; cursor: pointer; transition: 0.3s; padding: 5px; flex-shrink: 0;}
-.comment-submit-btn:hover { color: var(--primary-hover); transform: scale(1.1); }
-
-/* PROFILE UI & CODY WALLET */
-.profile-header { background: var(--card); border: 1px solid var(--border); border-radius: 24px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
-.profile-cover { height: 140px; background: linear-gradient(135deg, #0f172a, #1e293b); position: relative; overflow: hidden; border-bottom: 1px solid rgba(255,255,255,0.05);}
-.profile-info-wrap { display: flex; flex-direction: column; align-items: center; padding: 0 20px 25px 20px; position: relative; margin-top: -60px; }
-.profile-avatar-large { width: 120px; height: 120px; border-radius: 50%; border: 6px solid var(--card); background: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 40px; color: var(--muted); overflow: hidden; z-index: 5; box-shadow: 0 10px 25px rgba(0,0,0,0.5); margin-bottom: 15px; }
-.profile-avatar-large img { width: 100%; height: 100%; object-fit: cover;}
-.profile-name-text { font-size: 26px; font-weight: 800; text-align: center; color: white; letter-spacing: -0.5px;}
-.profile-handle-text { background: linear-gradient(45deg, #3b82f6, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 15px; font-weight: 700; text-align: center; margin-bottom: 10px;}
-.profile-bio { margin-top: 10px; font-size: 14px; color: #cbd5e1; line-height: 1.6; text-align: center; max-width: 90%; }
-.profile-action-btns { display: flex; gap: 15px; width: 100%; justify-content: center; margin-top: 25px; margin-bottom: 20px; }
-.logout-btn { background: rgba(248, 113, 113, 0.1); color: #f87171; border: 1px solid rgba(248, 113, 113, 0.2); padding: 12px 0; border-radius: 30px; font-size: 14px; font-weight: 700; cursor: pointer; flex: 1; max-width: 150px; transition: 0.3s;}
-
-/* Cody Wallet Card */
-.wallet-card { width: 100%; background: linear-gradient(180deg, rgba(14,165,233,0.05) 0%, rgba(0,0,0,0.3) 100%); border: 1px solid rgba(14,165,233,0.2); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 20px; position: relative; overflow: hidden; box-shadow: inset 0 0 20px rgba(14,165,233,0.05);}
-.wallet-title { font-size: 14px; font-weight: 700; color: #94a3b8; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; letter-spacing: 1px;}
-.wallet-balance { font-size: 38px; font-weight: 800; color: white; margin-bottom: 5px; text-shadow: 0 0 20px rgba(14,165,233,0.5);}
-.wallet-price { font-size: 14px; font-weight: 600; color: #38bdf8; margin-bottom: 15px; background: rgba(14, 165, 233, 0.1); display: inline-block; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(14,165,233,0.2);}
-.wallet-warning { background: rgba(245, 158, 11, 0.1); border: 1px dashed rgba(245, 158, 11, 0.3); color: #fcd34d; font-size: 12px; font-weight: 600; padding: 10px; border-radius: 12px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; text-align: left; line-height: 1.4;}
-
-/* WITHDRAWAL HISTORY STYLES */
-.history-section { width: 100%; margin-top: 10px; text-align: left; }
-.history-title { font-size: 16px; font-weight: 800; color: white; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
-.history-list { display: flex; flex-direction: column; gap: 10px; }
-.history-item { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); border-radius: 16px; padding: 15px; display: flex; justify-content: space-between; align-items: center; transition: 0.3s;}
-.h-info { display: flex; flex-direction: column; gap: 4px; }
-.h-amount { font-size: 15px; font-weight: 800; color: white; display: flex; align-items: center; gap: 6px;}
-.h-date { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase;}
-.h-status { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px;}
-.status-pending { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.2); }
-.status-completed { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.2); }
-.status-rejected { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); }
-
-/* NEW PROFESSIONAL WITHDRAW BUTTON */
-.withdraw-btn { width: 100%; background: #1e293b; color: #64748b; border: 1px solid #334155; padding: 14px; border-radius: 14px; font-size: 14px; font-weight: 800; cursor: not-allowed; display: flex; justify-content: center; align-items: center; gap: 8px; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
-.withdraw-btn.active { background: var(--cody-grad); color: white; cursor: pointer; border: none; box-shadow: 0 4px 15px var(--cody-glow); }
-.withdraw-btn.active:hover { transform: translateY(-2px); filter: brightness(1.1); }
-
-.profile-stats { width: 100%; display: grid; grid-template-columns: repeat(3, 1fr); background: rgba(0,0,0,0.3); padding: 20px 15px; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
-.stat-box { display: flex; flex-direction: column; gap: 6px; border-right: 1px solid rgba(255,255,255,0.05); }
-.stat-box:last-child { border-right: none; }
-.stat-box b { font-size: 20px; color: white; font-weight: 800;}
-.stat-box span { font-size: 11px; color: var(--muted); text-transform: uppercase; font-weight: 700; letter-spacing: 1px;}
-
-/* WITHDRAWAL MODAL STYLES */
-.withdraw-methods { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-.method-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 16px; padding: 15px 10px; text-align: center; cursor: pointer; transition: 0.3s; }
-.method-card i { font-size: 24px; margin-bottom: 8px; display: block; }
-.method-card.active { border-color: var(--accent); background: rgba(139, 92, 246, 0.1); }
-.method-card.active[data-type="ton"] i { color: var(--ton); }
-.method-card.active[data-type="upi"] i { color: var(--upi); }
-.withdraw-input-group { display: none; }
-.withdraw-input-group.active { display: block; }
-
-/* GENERAL INPUTS & BUTTONS */
-.btn-primary { background: linear-gradient(135deg, #3b82f6, var(--accent)); color: white; border: none; border-radius: 14px; height: 48px; padding: 0 20px; font-weight: 700; font-size: 15px; cursor: pointer; transition: 0.3s; width: 100%; display: flex; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);}
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(59, 130, 246, 0.5); }
-input, textarea, select { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 14px; padding: 15px 18px; color: white; margin-bottom: 15px; font-size: 14.5px; outline: none; transition: 0.3s;}
-input:focus, textarea:focus, select:focus { border-color: var(--accent); background: rgba(139, 92, 246, 0.05); box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);}
-textarea { resize: vertical; min-height: 100px; }
-input[type="file"] { display: none; }
-.file-upload-label { display: flex; align-items: center; justify-content: center; gap: 10px; background: rgba(255,255,255,0.02); border: 2px dashed rgba(255,255,255,0.1); color: var(--muted); padding: 20px; border-radius: 16px; cursor: pointer; margin-bottom: 15px; font-weight: 600; transition: 0.3s;}
-
-/* Modals */
-.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 200; display: none; justify-content: center; align-items: center; padding: 20px;}
-.modal-content { background: var(--card); width: 100%; max-width: 420px; border-radius: 24px; padding: 25px; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.5);}
-.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 20px; font-weight: 800; color: white;}
-
-/* Fullscreen Modals */
-.fs-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 10000; display: none; flex-direction: column; animation: slideUp 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
-@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-.fs-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: var(--card); border-bottom: 1px solid var(--border); }
-.fs-title { font-size: 18px; font-weight: 700; color: white; display: flex; align-items: center; gap: 8px;}
-.fs-close { background: rgba(255,255,255,0.05); border: none; width: 38px; height: 38px; border-radius: 50%; color: white; font-size: 16px; cursor: pointer; display:flex; align-items:center; justify-content:center; transition:0.3s;}
-.fs-content { flex: 1; position: relative; overflow-y: auto; background: #000; }
-iframe { width: 100%; height: 100%; border: none; background: white;}
-
-/* SPLIT CODE VIEWER */
-.code-viewer-container { padding: 20px; background: #0d1117; min-height: 100%; padding-bottom: 100px;}
-.code-split-container { display: flex; gap: 15px; height: 100%; min-height: 500px; }
-.code-box-wrap { flex: 1; display: flex; flex-direction: column; background: #161b22; border-radius: 16px; border: 1px solid #30363d; overflow: hidden; }
-.code-box-header { background: #21262d; padding: 12px 15px; font-size: 14px; font-weight: 700; color: #c9d1d9; border-bottom: 1px solid #30363d; display: flex; justify-content: space-between; align-items: center;}
-.code-box-wrap pre { margin: 0; border: none; border-radius: 0; flex: 1; padding: 15px; font-family: 'Courier New', monospace; color: #c9d1d9; font-size: 13.5px; line-height: 1.6; white-space: pre-wrap; overflow-x: auto; }
-.copy-btn-small { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600; transition: 0.3s; display: flex; align-items: center; gap: 6px;}
-.copy-btn-small:hover { background: var(--primary); border-color: var(--primary); }
-
-@media (max-width: 768px) {
-    .code-split-container { flex-direction: column; }
-    .code-box-wrap { min-height: 300px; }
-}
+/* MODALS */
+.fs-modal { position: fixed; inset: 0; background: var(--bg); z-index: 1000; display: none; flex-direction: column; }
+#gamePlayer { position: fixed; inset: 0; background: #000; z-index: 2000; display: none; flex-direction: column; }
+.game-header { height: 60px; background: #111; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border-bottom: 1px solid #333; }
+.game-frame { flex: 1; border: none; width: 100%; height: 100%; background: white;}
 </style>
 </head>
 
 <body>
 
-<!-- LOADING SCREEN -->
-<div id="loadingOverlay">
-    <div class="spinner"></div>
-    <h3 style="font-size:18px; font-weight:700;">Loading App...</h3>
-</div>
+<div id="loadingOverlay"><div class="spinner"></div></div>
 
-<div id="toast" class="toast"><i class="fa-solid fa-circle-info"></i> <span id="toastMsg">Message</span></div>
-
-<!-- TOP BAR WITH LIVE CODY COINS -->
+<!-- TOP BAR -->
 <div class="topbar">
-  <div class="title">ℭØ𝔻ᗴ LIBRARY</div>
-  <div class="top-stats">
-    <span id="liveCoinBalance">
-        <div class="cody-icon"><i class="fa-solid fa-code"></i></div>
-        <b id="coinText">0.000</b>
-    </span>
+  <div class="logo">DEALFLOW</div>
+  <div class="balance-pill">
+    <i class="fa-solid fa-coins" style="color:var(--gold)"></i>
+    <span id="coinDisplay">0.0000</span>
   </div>
 </div>
 
-<!-- ================= HOME PAGE (CODE STORE) ================= -->
-<section id="home" class="page active">
-  <div class="store-header-wrap">
-      <div class="search-box">
-          <i class="fa-solid fa-magnifying-glass"></i>
-          <input type="text" id="searchInput" placeholder="Search projects by name..." oninput="filterStore()">
-          <span id="totalStoreItems" style="display:none;">0</span>
-      </div>
-  </div>
-  
-  <div class="code-grid" id="codeStoreGrid">
-      <!-- Loading indicator -->
-      <div style="text-align:center; padding: 40px; grid-column: 1 / -1;">
-          <div class="spinner" style="margin: 0 auto; border-top-color: #8b5cf6;"></div>
-          <p style="color:var(--muted); margin-top:10px; font-size:14px;">Loading Projects...</p>
-      </div>
-  </div>
-  
-  <div class="empty-state" id="emptyStore" style="display:none;">
-      <i class="fa-solid fa-box-open" id="emptyStoreIcon"></i>
-      <h3 id="emptyStoreTitle">Store is empty</h3>
-      <p style="font-size:13px;" id="emptyStoreDesc">Be the first to upload a project!</p>
-  </div>
+<!-- HOME SECTION -->
+<section id="home" class="page">
+    <div class="category-scroll">
+        <div class="chip active" onclick="filterCat('All', this)">All</div>
+        <div class="chip" onclick="filterCat('Games', this)">Games</div>
+        <div class="chip" onclick="filterCat('Premium Apps', this)">Premium Apps</div>
+        <div class="chip" onclick="filterCat('Video Editing', this)">Video</div>
+    </div>
+    <div class="store-grid" id="appsGrid"></div>
 </section>
 
-<!-- ================= INFO (POSTS FEED) ================= -->
-<section id="info" class="page">
-  <div id="postFeed">
-      <div style="text-align:center; padding: 60px 20px;">
-          <div class="spinner" style="margin: 0 auto;"></div>
-          <p style="color:var(--muted); margin-top:10px; font-size:14px;">Fetching Posts...</p>
-      </div>
-  </div>
-</section>
-
-<!-- ================= UPLOAD PAGE ================= -->
-<section id="upload" class="page">
-  <div class="card">
-    <h3 style="margin-bottom:20px; font-size: 20px; font-weight:800; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-pen-nib" style="color:var(--primary)"></i> Create New</h3>
-    
-    <select id="uploadType" onchange="toggleUploadType()">
-      <option value="post">📝 Regular Feed Post</option>
-      <option value="code">💻 Premium Code Project</option>
-    </select>
-    
-    <textarea id="text" placeholder="What's on your mind?"></textarea>
-    
-    <input type="text" id="codeTitle" placeholder="Project Title (e.g., UI Dashboard)" style="display:none;">
-    <textarea id="codeSource" placeholder="Paste USER HTML/CSS/JS Source Code here..." style="display:none; min-height:120px; font-family:monospace; border-left: 3px solid #8b5cf6;"></textarea>
-    <textarea id="adminCodeSource" placeholder="Paste ADMIN Source Code here (Optional)..." style="display:none; min-height:120px; font-family:monospace; border-left: 3px solid #ec4899;"></textarea>
-    <textarea id="codeDesc" placeholder="Describe your project's features..." style="display:none; min-height:80px;"></textarea>
-
-    <label class="file-upload-label" for="photo" id="photoLabel">
-        <i class="fa-solid fa-cloud-arrow-up" style="font-size:24px; color:var(--primary)"></i> 
-        <div style="display:flex; flex-direction:column; align-items:flex-start;">
-            <span id="fileName" style="color:white; font-size:15px;">Upload Photo/Video</span>
-            <span style="font-size:12px; font-weight:400;">JPG, PNG, GIF or MP4 (Max 5MB)</span>
+<!-- EARN SECTION (UPDATED) -->
+<section id="earn" class="page" style="display:none; padding: 20px;">
+    <h2>Daily Tasks</h2>
+    <div style="background:var(--card); padding:20px; border-radius:20px; margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+        <div>
+            <h4 id="earnTitle">Watch Ad</h4>
+            <p id="earnProgress" style="font-size:12px; color:var(--muted)">Progress: 0/10 (+20.00 Coins)</p>
         </div>
-    </label>
-    <input type="file" id="photo" accept="image/*, video/mp4, video/x-m4v, video/*" onchange="document.getElementById('fileName').innerText = this.files[0] ? this.files[0].name : 'Upload Photo/Video'">
-    
-    <div style="display:flex; align-items:center; gap:10px; margin-bottom:15px;">
-       <hr style="flex:1; border:none; border-top:1px solid rgba(255,255,255,0.1);">
-       <span style="color:var(--muted); font-size:12px; font-weight:700;">OR PASTE LINK</span>
-       <hr style="flex:1; border:none; border-top:1px solid rgba(255,255,255,0.1);">
+        <button id="monetagBtn" onclick="watchRewardAd()" style="background:var(--accent); color:white; padding:12px 24px; border-radius:12px; border:none; font-weight:bold;">Watch</button>
     </div>
-    
-    <input type="text" id="mediaUrl" placeholder="Paste direct Image or Video URL here...">
-
-    <button id="publishBtn" class="btn-primary" onclick="uploadContent()" style="margin-top:15px;">
-        Publish Now <i class="fa-solid fa-paper-plane"></i>
-    </button>
-  </div>
+    <p id="cooldownText" style="text-align:center; margin-top:15px; font-size:12px; color:var(--gold); display:none;"></p>
 </section>
 
-<!-- ================= PROFILE ================= -->
-<section id="profile" class="page">
-  <div class="profile-header">
-    <div class="profile-cover"></div>
-    <div class="profile-info-wrap">
-      <div class="profile-avatar-large" id="profAvatarDisplay"><i class="fa-solid fa-user"></i></div>
-      <div class="profile-name-text" id="profName">Loading...</div>
-      <div class="profile-handle-text" id="profHandle">@loading</div>
-      
-      <!-- WALLET CARD (PROFESSIONAL) -->
-      <div class="wallet-card">
-          <div class="wallet-title"><div class="cody-icon"><i class="fa-solid fa-code"></i></div> Cody Coin Balance</div>
-          <div class="wallet-balance" id="profCoinBalance">0.000</div>
-          <div class="wallet-price">Current Est. Price: <span id="dynamicPrice">$0.0000</span></div>
-          
-          <div class="wallet-warning" id="withdrawWarning">
-              <i class="fa-solid fa-lock" style="font-size:18px;"></i>
-              <span id="dynamicLockMsg">Phase 1 locked. Coin release and withdrawal will be available in <b>6 Months</b>.</span>
-          </div>
-          
-          <button id="withdrawMainBtn" class="withdraw-btn" onclick="openWithdrawModal()">
-              <i class="fa-solid fa-lock" id="withdrawBtnIcon"></i> <span id="withdrawBtnText">Withdraw Locked</span>
-          </button>
-      </div>
-
-      <!-- WITHDRAWAL HISTORY SECTION (NEW) -->
-      <div class="history-section">
-          <h4 class="history-title"><i class="fa-solid fa-clock-rotate-left" style="color:#0ea5e9;"></i> Withdrawal History</h4>
-          <div id="withdrawalHistoryList" class="history-list">
-              <!-- History items will load here -->
-              <div style="text-align:center; padding: 20px; color:var(--muted); font-size:13px;">No history available</div>
-          </div>
-      </div>
-      
-      <div class="profile-action-btns">
-          <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
-      </div>
-      
-      <div class="profile-stats">
-        <div class="stat-box"><b><span id="profAdsCount">0</span></b><span>Projects</span></div>
-        <div class="stat-box"><b><span id="profPostsCount">0</span></b><span>Posts</span></div>
-        <div class="stat-box"><b><span id="profFollowers">0</span></b><span>Followers</span></div>
-      </div>
+<!-- PROFILE SECTION -->
+<section id="profile" class="page" style="display:none; padding: 20px; text-align: center;">
+    <div id="profileImageContainer">
+        <img id="profilePic" src="https://ui-avatars.com/api/?name=User" style="width:80px; height:80px; border-radius:50%; border:3px solid var(--accent); margin-bottom:10px;">
     </div>
-  </div>
+    <h2 id="userName">User_Member</h2>
+    <div style="background:var(--card); padding:30px; border-radius:25px; margin-top:20px; border:1px solid var(--glass-border);">
+        <p style="font-size:12px; color:var(--muted)">TOTAL BALANCE</p>
+        <h1 style="font-size:40px; margin:10px 0;" id="profBalance">0.0000</h1>
+        <button style="width:100%; padding:15px; background:white; color:black; border-radius:15px; font-weight:800; border:none;">Withdraw Now</button>
+    </div>
 </section>
 
-<!-- PROFESSIONAL WITHDRAWAL MODAL -->
-<div class="modal-overlay" id="withdrawModal">
-  <div class="modal-content">
-    <div class="modal-header">
-        <span>Withdraw Coins</span>
-        <i class="fa-solid fa-xmark" style="cursor:pointer; background:rgba(255,255,255,0.1); width:30px; height:30px; display:flex; align-items:center; justify-content:center; border-radius:50%;" onclick="document.getElementById('withdrawModal').style.display='none'"></i>
+<!-- MODALS (Game Player & Details) -->
+<div id="gamePlayer">
+    <div class="game-header">
+        <button onclick="closeGame()" style="background:none; border:none; color:white; font-size:24px;"><i class="fa-solid fa-xmark"></i></button>
+        <div style="color:var(--gold); font-weight:800;">Earned: <span id="sessionCoins">0.0000</span></div>
+        <div style="width:35px"></div>
     </div>
-    
-    <p style="color:var(--muted); font-size:13px; margin-bottom:15px; text-align:center;">Select your preferred withdrawal method:</p>
-    
-    <div class="withdraw-methods">
-        <div class="method-card active" data-type="ton" onclick="switchWithdrawMethod('ton')">
-            <i class="fa-solid fa-gem"></i>
-            <span style="font-size:12px; font-weight:700;">TON Wallet</span>
-        </div>
-        <div class="method-card" data-type="upi" onclick="switchWithdrawMethod('upi')">
-            <i class="fa-solid fa-building-columns"></i>
-            <span style="font-size:12px; font-weight:700;">UPI (India)</span>
-        </div>
-    </div>
-
-    <div id="tonInputGroup" class="withdraw-input-group active">
-        <input type="text" id="tonAddress" placeholder="Enter TON Wallet Address">
-        <p style="font-size:11px; color:var(--muted); margin-top:-10px; margin-bottom:15px; padding-left:5px;">Only TON network supported.</p>
-    </div>
-
-    <div id="upiInputGroup" class="withdraw-input-group">
-        <input type="text" id="upiId" placeholder="Enter UPI ID (e.g. user@paytm)">
-        <p style="font-size:11px; color:var(--muted); margin-top:-10px; margin-bottom:15px; padding-left:5px;">Instant transfer to bank account.</p>
-    </div>
-
-    <input type="number" id="withdrawAmount" placeholder="Amount of Cody Coins" min="10">
-    <p style="font-size:12px; color:var(--primary); font-weight:700; margin-bottom:20px; text-align:center;">Min. Withdrawal: 10.000 Cody</p>
-
-    <button class="btn-primary" id="finalWithdrawBtn" onclick="submitWithdrawal()">Request Withdrawal <i class="fa-solid fa-paper-plane"></i></button>
-  </div>
+    <iframe id="gameIframe" class="game-frame"></iframe>
 </div>
 
-<!-- ================= FULLSCREEN MODALS ================= -->
-<div id="previewModal" class="fs-modal">
-    <div class="fs-header">
-        <div class="fs-title"><i class="fa-solid fa-mobile-screen" style="color:#8b5cf6;"></i> Live App...</div>
-        <div style="font-size:14px; font-weight:800; color:#38bdf8; background:rgba(14, 165, 233, 0.1); padding:5px 12px; border-radius:20px; border:1px solid rgba(14,165,233,0.3); display:flex; align-items:center; gap:6px;">
-            <div class="cody-icon" style="width:16px; height:16px; font-size:8px;"><i class="fa-solid fa-code"></i></div>
-            <span id="modalCoinText">0.000</span>
-        </div>
-        <button class="fs-close" onclick="closeStoreModal('previewModal')"><i class="fa-solid fa-xmark"></i></button>
+<div id="detailModal" class="fs-modal">
+    <div style="padding:15px; display:flex; align-items:center; gap:15px; border-bottom:1px solid var(--glass-border);">
+        <i class="fa-solid fa-chevron-left" onclick="closeDetail()" style="font-size:20px;"></i>
+        <span style="font-weight:800">App Details</span>
     </div>
-    <div class="fs-content">
-        <iframe id="previewFrame"></iframe>
+    <div style="padding:20px;">
+        <img id="detailImg" src="" style="width:100%; border-radius:24px; height:200px; object-fit:cover;">
+        <h2 id="detailTitle" style="margin-top:20px;"></h2>
+        <p id="detailDesc" style="color:var(--muted); margin-top:10px; font-size:14px;"></p>
+        <button id="mainBtn" style="width:100%; padding:18px; border-radius:18px; border:none; font-weight:800; margin-top:30px; background:var(--primary-grad); color:white;">Download Now</button>
     </div>
 </div>
 
-<div id="codeModal" class="fs-modal">
-    <div class="fs-header">
-        <div class="fs-title"><i class="fa-solid fa-code" style="color:#ec4899;"></i> Source Code</div>
-        <button class="fs-close" onclick="closeStoreModal('codeModal')"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-    <div class="fs-content">
-        <div class="code-viewer-container">
-            <div class="code-split-container">
-                <div class="code-box-wrap">
-                    <div class="code-box-header">
-                        <span><i class="fa-solid fa-file-code" style="color:#8b5cf6;"></i> User Code</span>
-                        <button class="copy-btn-small" onclick="copySpecificCode('user')"><i class="fa-solid fa-copy"></i> Copy</button>
-                    </div>
-                    <pre><code id="userCodeBlock"></code></pre>
-                </div>
-                <div class="code-box-wrap">
-                    <div class="code-box-header">
-                        <span><i class="fa-solid fa-user-shield" style="color:#ec4899;"></i> Admin Code</span>
-                        <button class="copy-btn-small" onclick="copySpecificCode('admin')"><i class="fa-solid fa-copy"></i> Copy</button>
-                    </div>
-                    <pre><code id="adminCodeBlock"></code></pre>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- FLOATING BOTTOM NAV -->
 <nav>
-  <div class="nav-item active" onclick="openPage('home',this)"><i class="fa-solid fa-store"></i><span>Store</span></div>
-  <div class="nav-item" onclick="openPage('info',this)"><i class="fa-solid fa-compass"></i><span>Feed</span></div>
-  <div class="nav-item" onclick="openPage('upload',this)"><i class="fa-solid fa-circle-plus"></i><span>Post</span></div>
-  <div class="nav-item" onclick="openPage('profile',this)"><i class="fa-solid fa-user"></i><span>Profile</span></div>
+  <div class="nav-item active" onclick="showPage('home', this)"><i class="fa-solid fa-house"></i><span>Home</span></div>
+  <div class="nav-item" onclick="showPage('earn', this)"><i class="fa-solid fa-circle-dollar-to-slot"></i><span>Earn</span></div>
+  <div class="nav-item" onclick="showPage('profile', this)"><i class="fa-solid fa-user"></i><span>Profile</span></div>
 </nav>
 
 <script>
-window.loadedCodes = {};
-window.totalStoreItemsCount = 0; 
+// --- CONFIG & SDKs ---
+const SUPABASE_URL = "https://ubjfirquvrvughaxneyo.supabase.co";  
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InViamZpcnF1dnJ2dWdoYXhuZXlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk1MTMxOTYsImV4cCI6MjA4NTA4OTE5Nn0.T9wxE4vFLGQC-_gv_50fixnbAiHIvqHe40f0txuCyrQ";   
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);  
+const adsgram = window.Adsgram ? window.Adsgram.init({ blockId: "int-24524" }) : null;
 
-let userBalance = 0.000;
-let coinTimer = null;
-let currentSessionEarned = 0.000;
-let isWithdrawEnabled = false; // ADMIN CONTROLLED
+let APP_DATA = [];
+let balance = 0.0000;
+let gameTimer = null;
+let currentSessionEarned = 0;
 
-let pageLoaded = { home: false, info: false, profile: false };
-
-let adsgramController = null;
-function getAdsgramController() {
-    if (!adsgramController && window.Adsgram) {
-        adsgramController = window.Adsgram.init({ blockId: "int-24524" });
-    }
-    return adsgramController;
+window.onload = async () => {
+    initTelegram();
+    await fetchApps();
+    updateEarnUI();
+    setTimeout(() => document.getElementById('loadingOverlay').style.display='none', 1000);
 }
 
-// ================= SUPABASE INITIALIZATION =================
-const SUPABASE_URL = "https://ubjfirquvrvughaxneyo.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InViamZpcnF1dnJ2dWdoYXhuZXlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk1MTMxOTYsImV4cCI6MjA4NTA4OTE5Nn0.T9wxE4vFLGQC-_gv_50fixnbAiHIvqHe40f0txuCyrQ"; 
-const { createClient } = window.supabase;
-const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-let currentUser = null;
-let userProfile = null;
-let allUsers = [];
-let allComments = [];
-let activeUserCode = "";
-let activeAdminCode = "";
-
-document.addEventListener('DOMContentLoaded', async () => {
-    getAdsgramController();
-    
-    try {
-        const tg = window.Telegram.WebApp;
-        tg.ready();
-        tg.expand();
-        
-        const tgUser = tg.initDataUnsafe.user;
-        
-        if (tgUser) {
-            // AUTO LOGIN WITH TELEGRAM DATA
-            await processTelegramLogin(tgUser.username || `user_${tgUser.id}`, tgUser.first_name, tgUser.photo_url);
-        } else {
-            // Browser Test Fallback
-            document.getElementById('loadingOverlay').innerHTML = "<h3>Please open in Telegram</h3>";
-        }
-    } catch(e) {
-        document.getElementById('loadingOverlay').innerHTML = "<h3>Connection Error</h3>";
-    }
-});
-
-async function processTelegramLogin(username, firstName, photoUrl) {
-    let cleanUsername = username.replace('@', '').trim().toLowerCase();
-    const dummyEmail = `${cleanUsername}@telegram.app`;
-    const dummyPassword = `TgUser_${cleanUsername}_2024!`;
-    const autoAvatar = photoUrl || `https://ui-avatars.com/api/?name=${firstName}&background=random&color=fff&size=200&bold=true`;
-
-    try {
-        let { data, error } = await sb.auth.signInWithPassword({ email: dummyEmail, password: dummyPassword });
-        if (error) {
-            const { data: signUpData, error: signUpError } = await sb.auth.signUp({ email: dummyEmail, password: dummyPassword });
-            if(signUpError) throw signUpError;
-            currentUser = signUpData.user;
-            await sb.from('users').insert({ 
-                uid: currentUser.id, email: dummyEmail, username: firstName, photo_url: autoAvatar, balance: 0.00, followers: 0, following: 0 
-            });
-        } else {
-            currentUser = data.user;
-            // UPDATE LATEST TELEGRAM INFO
-            await sb.from('users').update({ username: firstName, photo_url: autoAvatar }).eq('uid', currentUser.id);
-        }
-        
-        document.getElementById('loadingOverlay').style.display = 'none';
-        initApp();
-    } catch(e) { 
-        document.getElementById('loadingOverlay').innerHTML = "<h3>Login failed. Try again inside Telegram.</h3>";
+function initTelegram() {
+    const tg = window.Telegram.WebApp;
+    tg.ready(); tg.expand();
+    if(tg.initDataUnsafe?.user) {
+        document.getElementById('userName').innerText = tg.initDataUnsafe.user.first_name;
+        document.getElementById('profilePic').src = tg.initDataUnsafe.user.photo_url || `https://ui-avatars.com/api/?name=${tg.initDataUnsafe.user.first_name}`;
     }
 }
 
-async function logout() { await sb.auth.signOut(); window.location.reload(); }
+// 🛑 1. MONETAG EARN LOGIC (10 Ads = 20 Coins, 4 Hour Cooldown)
+async function watchRewardAd() {
+    const lastClaim = localStorage.getItem('last_reward_claim');
+    const COOLDOWN_TIME = 4 * 60 * 60 * 1000; // 4 Hours
 
-async function ensureUsersLoaded() {
-    if (allUsers.length === 0) {
-        const { data: uData } = await sb.from('users').select('uid, username, photo_url');
-        allUsers = uData || [];
-    }
-}
-
-// ================= ADMIN CONTROL: FETCH SETTINGS =================
-async function checkAdminSettings() {
-    try {
-        const { data } = await sb.from('app_settings').select('*');
-        if(data) {
-            data.forEach(setting => {
-                if(setting.key === 'withdraw_status') {
-                   isWithdrawEnabled = setting.value === "true";
-                }
-                if(setting.key === 'cody_price') {
-                   document.getElementById('dynamicPrice').innerText = "$" + setting.value;
-                }
-                if(setting.key === 'lock_message') {
-                   document.getElementById('dynamicLockMsg').innerText = setting.value;
-                }
-            });
-            updateWithdrawUI();
-        }
-    } catch(e) { console.log("Settings fetch error"); }
-}
-
-function updateWithdrawUI() {
-    const btn = document.getElementById('withdrawMainBtn');
-    const icon = document.getElementById('withdrawBtnIcon');
-    const text = document.getElementById('withdrawBtnText');
-    const warn = document.getElementById('withdrawWarning');
-
-    if (isWithdrawEnabled) {
-        btn.classList.add('active');
-        btn.disabled = false;
-        icon.className = "fa-solid fa-money-bill-transfer";
-        text.innerText = "Withdraw Coins";
-        warn.style.display = "none";
-    } else {
-        btn.classList.remove('active');
-        btn.disabled = true;
-        icon.className = "fa-solid fa-lock";
-        text.innerText = "Withdraw Locked";
-        warn.style.display = "flex";
-    }
-}
-
-// ================= INIT APP & LAZY LOADERS =================
-async function initApp() {
-    await fetchUserProfile();
-    await checkAdminSettings();
-    await loadHomePage();
-}
-
-async function loadHomePage() {
-    if(pageLoaded.home) return;
-    await ensureUsersLoaded();
-    await fetchCodeStore();
-    pageLoaded.home = true;
-}
-
-async function loadFeedPage() {
-    if(pageLoaded.info) return;
-    await ensureUsersLoaded();
-    if(allComments.length === 0) {
-        const { data: cData } = await sb.from('comments').select('*').order('created_at', {ascending: true});
-        allComments = cData || [];
-    }
-    await fetchPostsFeed();
-    pageLoaded.info = true;
-}
-
-async function loadProfilePage() {
-    if(pageLoaded.profile) return;
-    await fetchUserStats();
-    await checkAdminSettings();
-    await fetchWithdrawalHistory();
-    pageLoaded.profile = true;
-}
-
-async function fetchUserProfile() {
-    try {
-        const { data } = await sb.from('users').select('*').eq('uid', currentUser.id).single();
-        userProfile = data || { username: 'User', balance: 0 };
-        document.getElementById('profName').innerText = userProfile.username || 'User';
-        document.getElementById('profHandle').innerText = `@${(userProfile.username||'user').replace(/\s+/g,'').toLowerCase()}`;
-        if(userProfile.photo_url) { document.getElementById('profAvatarDisplay').innerHTML = `<img src="${userProfile.photo_url}">`; }
-        
-        userBalance = parseFloat(userProfile.balance || 0);
-        document.getElementById('coinText').innerText = userBalance.toFixed(3);
-        if(document.getElementById('profCoinBalance')) document.getElementById('profCoinBalance').innerText = userBalance.toFixed(3);
-    } catch(e) { userProfile = { username: 'User', balance: 0 }; }
-}
-
-async function fetchUserStats() {
-    try {
-        const { count: adCount } = await sb.from('user_ads').select('*', { count: 'exact', head: true }).eq('uid', currentUser.id);
-        document.getElementById('profAdsCount').innerText = adCount || 0;
-        const { count: postCount } = await sb.from('posts').select('*', { count: 'exact', head: true }).eq('uid', currentUser.id);
-        document.getElementById('profPostsCount').innerText = postCount || 0;
-    } catch(e) {}
-}
-
-// ================= WITHDRAWAL SYSTEM LOGIC =================
-function openWithdrawModal() {
-    if(!isWithdrawEnabled) {
-        showToast("Withdrawal is currently locked by Admin.");
+    if (lastClaim && (Date.now() - lastClaim < COOLDOWN_TIME)) {
+        alert("Wait for the 4-hour cooldown to finish!");
         return;
     }
-    document.getElementById('withdrawModal').style.display = 'flex';
-}
 
-let selectedMethod = 'ton';
-function switchWithdrawMethod(type) {
-    selectedMethod = type;
-    document.querySelectorAll('.method-card').forEach(c => c.classList.remove('active'));
-    document.querySelector(`.method-card[data-type="${type}"]`).classList.add('active');
-    
-    document.querySelectorAll('.withdraw-input-group').forEach(g => g.classList.remove('active'));
-    document.getElementById(`${type}InputGroup`).classList.add('active');
-}
-
-async function fetchWithdrawalHistory() {
-    const historyList = document.getElementById('withdrawalHistoryList');
     try {
-        const { data, error } = await sb.from('withdrawals')
-            .select('*')
-            .eq('uid', currentUser.id)
-            .order('created_at', { ascending: false });
+        if (typeof show_10693042 === 'function') {
+            await show_10693042();
+            let count = parseInt(localStorage.getItem('monetag_ad_count') || 0);
+            count++;
 
-        if (error) throw error;
-
-        if (!data || data.length === 0) {
-            historyList.innerHTML = `<div style="text-align:center; padding: 20px; color:var(--muted); font-size:13px;">No history available</div>`;
-            return;
+            if (count >= 10) {
+                balance += 20.00;
+                localStorage.setItem('monetag_ad_count', 0);
+                localStorage.setItem('last_reward_claim', Date.now());
+                alert("🎉 Congratulations! 20.00 Coins added to your balance!");
+            } else {
+                localStorage.setItem('monetag_ad_count', count);
+                alert(`Ad watched! Progress: ${count}/10`);
+            }
+            updateEarnUI();
+            updateBalance();
         }
-
-        let html = "";
-        data.forEach(item => {
-            const date = new Date(item.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-            const statusClass = `status-${item.status.toLowerCase()}`;
-            const icon = item.method === 'ton' ? 'fa-gem' : 'fa-building-columns';
-            const color = item.method === 'ton' ? 'var(--ton)' : 'var(--upi)';
-
-            html += `
-                <div class="history-item">
-                    <div class="h-info">
-                        <div class="h-amount"><div class="cody-icon" style="width:14px; height:14px; font-size:7px;"><i class="fa-solid fa-code"></i></div> ${parseFloat(item.amount).toFixed(3)}</div>
-                        <div class="h-date"><i class="fa-solid ${icon}" style="color:${color}; margin-right:5px;"></i> ${date} • ${item.method.toUpperCase()}</div>
-                    </div>
-                    <div class="h-status ${statusClass}">${item.status}</div>
-                </div>
-            `;
-        });
-        historyList.innerHTML = html;
-    } catch (e) {
-        console.error("History error:", e);
-    }
+    } catch(e) { alert("Ad failed to load."); }
 }
 
-async function submitWithdrawal() {
-    const amount = parseFloat(document.getElementById('withdrawAmount').value);
-    const tonAddr = document.getElementById('tonAddress').value.trim();
-    const upi = document.getElementById('upiId').value.trim();
-    const btn = document.getElementById('finalWithdrawBtn');
+function updateEarnUI() {
+    const count = localStorage.getItem('monetag_ad_count') || 0;
+    const lastClaim = localStorage.getItem('last_reward_claim');
+    const btn = document.getElementById('monetagBtn');
+    const progressText = document.getElementById('earnProgress');
+    const cooldownText = document.getElementById('cooldownText');
 
-    if (isNaN(amount) || amount < 10) { showToast("Minimum withdrawal is 10.000 Cody"); return; }
-    if (amount > userBalance) { showToast("Insufficient balance!"); return; }
-    
-    let details = selectedMethod === 'ton' ? tonAddr : upi;
-    if (!details) { showToast(`Please enter your ${selectedMethod.toUpperCase()} details`); return; }
+    progressText.innerText = `Progress: ${count}/10 (+20.00 Coins)`;
 
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
-    btn.disabled = true;
-
-    try {
-        const { error: wError } = await sb.from('withdrawals').insert({
-            uid: currentUser.id,
-            username: userProfile.username,
-            amount: amount,
-            method: selectedMethod,
-            details: details,
-            status: 'Pending'
-        });
-
-        if (wError) throw wError;
-
-        const newBalance = userBalance - amount;
-        await sb.from('users').update({ balance: newBalance }).eq('uid', currentUser.id);
-        
-        userBalance = newBalance;
-        document.getElementById('coinText').innerText = userBalance.toFixed(3);
-        document.getElementById('profCoinBalance').innerText = userBalance.toFixed(3);
-        
-        showToast("Withdrawal Request Sent!", true);
-        document.getElementById('withdrawModal').style.display = 'none';
-        
-        fetchWithdrawalHistory();
-        
-    } catch(e) {
-        showToast("Error: Request failed.");
-    } finally {
-        btn.innerHTML = 'Request Withdrawal <i class="fa-solid fa-paper-plane"></i>';
+    if (lastClaim && (Date.now() - lastClaim < 4 * 60 * 60 * 1000)) {
+        btn.disabled = true;
+        btn.style.background = "#333";
+        cooldownText.style.display = "block";
+        const remaining = (4 - (Date.now() - lastClaim) / (60 * 60 * 1000)).toFixed(1);
+        cooldownText.innerText = `Available in ${remaining} hours`;
+    } else {
         btn.disabled = false;
+        btn.style.background = "var(--accent)";
+        cooldownText.style.display = "none";
     }
 }
 
-// ================= UPLOAD LOGIC =================
-function toggleUploadType() {
-    const isCode = (document.getElementById('uploadType').value === 'code');
-    document.getElementById('text').style.display = isCode ? 'none' : 'block';
-    document.getElementById('codeTitle').style.display = isCode ? 'block' : 'none';
-    document.getElementById('codeDesc').style.display = isCode ? 'block' : 'none';
-    document.getElementById('codeSource').style.display = isCode ? 'block' : 'none';
-    document.getElementById('adminCodeSource').style.display = isCode ? 'block' : 'none';
-    document.getElementById('photoLabel').querySelector('span').innerText = isCode ? 'Upload App Thumbnail' : 'Upload Photo/Video';
+// 🛑 2. CATEGORY FILTERING LOGIC
+function filterCat(cat, el) {
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+
+    let filtered = [];
+    if(cat === 'All') {
+        filtered = APP_DATA;
+    } else if(cat === 'Games') {
+        filtered = APP_DATA.filter(a => a.type === 'game');
+    } else if(cat === 'Premium Apps') {
+        filtered = APP_DATA.filter(a => a.type !== 'game' && !a.cat.toLowerCase().includes('video'));
+    } else if(cat === 'Video') {
+        filtered = APP_DATA.filter(a => a.cat.toLowerCase().includes('video'));
+    }
+    renderApps(filtered);
 }
 
-function compressImage(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader(); reader.readAsDataURL(file);
-        reader.onload = event => {
-            const img = new Image(); img.src = event.target.result;
-            img.onload = () => {
-                const canvas = document.createElement('canvas'); const scaleSize = 500 / img.width; canvas.width = 500; canvas.height = img.height * scaleSize;
-                canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height); resolve(canvas.toDataURL('image/jpeg', 0.5)); 
-            }
-        }; reader.onerror = error => reject(error);
-    });
+// Navigation & Data
+function showPage(id, el) {
+    try { if(window.TelegramAdsController) window.TelegramAdsController.show(); } catch(e) {}
+    document.getElementById('home').style.display = 'none';
+    document.getElementById('earn').style.display = 'none';
+    document.getElementById('profile').style.display = 'none';
+    document.getElementById(id).style.display = 'block';
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    if(el) el.classList.add('active');
 }
 
-function fileToBase64(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-    });
-}
-
-async function uploadContent() {
-    const type = document.getElementById('uploadType').value; 
-    const photoFile = document.getElementById('photo').files[0]; 
-    const mediaUrl = document.getElementById('mediaUrl').value.trim();
-    const btn = document.getElementById('publishBtn');
-    
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publishing...'; 
-    btn.disabled = true;
-    
-    try {
-        let finalMedia = null; 
-        if(photoFile) { 
-            if(photoFile.type.startsWith('image/')) { finalMedia = await compressImage(photoFile); } 
-            else if (photoFile.type.startsWith('video/')) {
-                if(photoFile.size > 5 * 1024 * 1024) throw new Error("Video size must be less than 5MB!");
-                finalMedia = await fileToBase64(photoFile);
-            }
-        } 
-        else if(mediaUrl) { finalMedia = mediaUrl; }
-        
-        if(type === "code") {
-            const title = document.getElementById('codeTitle').value.trim();
-            const desc = document.getElementById('codeDesc').value.trim();
-            const userSource = document.getElementById('codeSource').value.trim();
-            const adminSource = document.getElementById('adminCodeSource').value.trim() || "No admin code provided.";
-            if(!title || !userSource || !finalMedia) throw new Error("Title, Code, and Media required!");
-            const combinedText = title + "|||" + desc;
-            const combinedSource = userSource + "|||ADMIN_CODE|||" + adminSource;
-            await sb.from('user_ads').insert({ uid: currentUser.id, text: combinedText, ad_code: combinedSource, link: finalMedia, views_received: 0 });
-            showToast("Project Published!", true);
-            pageLoaded.home = false;
-            openPage('home', document.querySelectorAll('.nav-item')[0]);
-        } else {
-            const textVal = document.getElementById('text').value.trim(); 
-            if(!textVal && !finalMedia) throw new Error("Write something!");
-            const { data } = await sb.from('posts').insert({ uid: currentUser.id, text: textVal, image_url: finalMedia, likes: 0, views: 0 }).select();
-            if(data && data[0]) { 
-                const html = generatePostHTML(data[0], userProfile || { username: 'User' }); 
-                if (pageLoaded.info) { document.getElementById('postFeed').insertAdjacentHTML('afterbegin', html); } 
-                else { pageLoaded.info = false; }
-            }
-            showToast("Post Live!"); 
-            openPage('info', document.querySelectorAll('.nav-item')[1]);
-        }
-        document.getElementById('text').value = ""; document.getElementById('codeTitle').value = ""; document.getElementById('codeDesc').value = ""; 
-        document.getElementById('codeSource').value = ""; document.getElementById('adminCodeSource').value = ""; document.getElementById('photo').value = ""; 
-        document.getElementById('mediaUrl').value = ""; document.getElementById('fileName').innerText = "Upload Photo/Video";
-        pageLoaded.profile = false; 
-    } catch(e) { showToast(e.message); }
-    btn.innerHTML = 'Publish Now <i class="fa-solid fa-paper-plane"></i>'; 
-    btn.disabled = false;
-}
-
-// ================= STORE LOGIC =================
-async function fetchCodeStore() {
-    try {
-        const { data } = await sb.from('user_ads').select('*').order('created_at', {ascending: false});
-        const grid = document.getElementById('codeStoreGrid');
-        const emptyEl = document.getElementById('emptyStore');
-        window.totalStoreItemsCount = data ? data.length : 0;
-        if(document.getElementById('totalStoreItems')) document.getElementById('totalStoreItems').innerText = window.totalStoreItemsCount;
-        if(!data || data.length === 0) { emptyEl.style.display = 'flex'; grid.innerHTML = ""; return; }
-        emptyEl.style.display = 'none';
-        let unlockData = JSON.parse(localStorage.getItem('storeUnlocks')) || {};
-        window.loadedCodes = {}; 
-        let html = "";
-        data.forEach(item => {
-            const u = allUsers.find(x => x.uid === item.uid) || {username: 'User'};
-            const uAvatar = u.photo_url ? `<img src="${u.photo_url}">` : '<i class="fa-solid fa-user" style="font-size:10px;"></i>';
-            let parts = (item.text || "").split("|||");
-            let title = parts[0] || "Untitled Project"; let desc = parts[1] || "";
-            let isVidStore = item.link && (item.link.startsWith('data:video') || item.link.toLowerCase().endsWith('.mp4') || item.link.toLowerCase().endsWith('.webm'));
-            let imgStr = item.link ? (isVidStore ? `<video src="${item.link}" muted loop autoplay playsinline style="width:100%;height:100%;object-fit:cover;"></video>` : `<img src="${item.link}">`) : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#334155;"><i class="fa-solid fa-image" style="font-size:40px;"></i></div>`;
-            window.loadedCodes[item.id] = item.ad_code || "";
-            let savedData = unlockData[item.id];
-            let mProg = 0, aProg = 0;
-            if (typeof savedData === 'number') { mProg = Math.min(savedData, 5); } 
-            else if (savedData) { mProg = savedData.monetag || 0; aProg = savedData.adsgram || 0; }
-            let isUnlocked = mProg >= 5 && aProg >= 5; 
-            let progressPercent = ((mProg + aProg) / 10) * 100;
-            let actionUI = !isUnlocked ? `<div class="lock-ui-container"><div class="lock-header"><div class="lock-icon-small"><i class="fa-solid fa-lock"></i></div><p class="lock-text">Requires 5 Ads Each</p></div><div class="progress-bar"><div class="progress-fill" style="width:${progressPercent}%;"></div></div><div style="display:flex; gap:8px; width:100%;"><button class="watch-ad-btn" id="btn_m_${item.id}" onclick="watchMonetagAd('${item.id}')" ${mProg >= 5 ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}><i class="fa-solid fa-circle-play" style="color:#ec4899"></i> Monetag (${mProg}/5)</button><button class="watch-ad-btn" id="btn_a_${item.id}" onclick="watchAdsgramAd('${item.id}')" ${aProg >= 5 ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}><i class="fa-solid fa-circle-play" style="color:#8b5cf6"></i> Adsgram (${aProg}/5)</button></div></div>` : `<div class="action-row"><button class="btn-preview" onclick="openStorePreview('${item.id}')"><div class="cody-icon"><i class="fa-solid fa-code"></i></div> Play & Earn Cody</button><button class="btn-code" onclick="openStoreCode('${item.id}')"><i class="fa-solid fa-code"></i> Source Code</button></div>`;
-            html += `<div class="app-card"><div class="app-img-box"><div class="app-author-badge">${uAvatar} ${u.username}</div>${imgStr}</div><div class="app-info"><div><div class="app-title">${title}</div><div class="app-desc">${desc}</div></div>${actionUI}</div></div>`;
+async function fetchApps() {
+    const { data } = await sb.from('user_ads').select('*').order('created_at', {ascending: false});
+    if(data) {
+        APP_DATA = data.map(item => {
+            const p = item.text.split('|||');
+            return { id: item.id, title: p[0], desc: p[1], link: p[2], cat: p[3]||'', type: p[4]||'app', img: item.link, ad_code: item.ad_code };
         });
-        grid.innerHTML = html;
-    } catch(e) {}
+        renderApps(APP_DATA);
+    }
 }
 
-function filterStore() {
-    let input = document.getElementById('searchInput').value.toLowerCase();
-    let cards = document.querySelectorAll('.app-card');
-    let visibleCount = 0;
-    cards.forEach(card => {
-        let titleText = card.querySelector('.app-title').innerText.toLowerCase();
-        let descText = card.querySelector('.app-desc').innerText.toLowerCase();
-        if (titleText.includes(input) || descText.includes(input)) { card.style.display = 'flex'; visibleCount++; } else { card.style.display = 'none'; }
-    });
-    if(document.getElementById('totalStoreItems')) document.getElementById('totalStoreItems').innerText = visibleCount;
-    document.getElementById('emptyStore').style.display = visibleCount === 0 ? 'flex' : 'none';
+function renderApps(apps) {
+    const grid = document.getElementById('appsGrid');
+    grid.innerHTML = apps.map(app => `
+        <div class="app-card" onclick="handleItemClick('${app.id}')">
+            ${app.type==='game' ? '<div class="badge-game">PLAY & EARN</div>' : ''}
+            <img class="app-icon" src="${app.img}">
+            <div class="app-title">${app.title}</div>
+            <div style="font-size:11px; color:var(--success); font-weight:800;">PREMIUM</div>
+        </div>
+    `).join('');
 }
 
-function watchMonetagAd(appId) {
-    const btn = document.getElementById(`btn_m_${appId}`);
-    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Wait...`; btn.disabled = true;
-    try {
-        if(typeof show_10693042 === 'function') { show_10693042().then(() => { handleAdSuccess(appId, 'monetag'); }).catch(() => { showToast("Monetag failed."); fetchCodeStore(); }); } 
-        else { showToast("Test Monetag..."); setTimeout(() => { handleAdSuccess(appId, 'monetag'); }, 2000); }
-    } catch (e) { fetchCodeStore(); }
+async function handleItemClick(id) {
+    const item = APP_DATA.find(x => x.id == id);
+    if (item.type === 'game') {
+        try { if(adsgram) await adsgram.show(); launchGame(id); } catch (e) { launchGame(id); }
+    } else { openDetail(id); }
 }
 
-function watchAdsgramAd(appId) {
-    const btn = document.getElementById(`btn_a_${appId}`);
-    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Wait...`; btn.disabled = true;
-    const controller = getAdsgramController();
-    try {
-        if(controller) { controller.show().then(() => { handleAdSuccess(appId, 'adsgram'); }).catch(() => { showToast("Adsgram failed."); fetchCodeStore(); }); } 
-        else { showToast("Test Adsgram..."); setTimeout(() => { handleAdSuccess(appId, 'adsgram'); }, 2000); }
-    } catch (e) { fetchCodeStore(); }
-}
-
-function handleAdSuccess(appId, type) {
-    let unlockData = JSON.parse(localStorage.getItem('storeUnlocks')) || {};
-    let savedData = unlockData[appId];
-    if (typeof savedData === 'number') { unlockData[appId] = { monetag: Math.min(savedData, 5), adsgram: 0 }; } 
-    else if (!savedData) { unlockData[appId] = { monetag: 0, adsgram: 0 }; }
-    if (unlockData[appId][type] < 5) { unlockData[appId][type]++; }
-    localStorage.setItem('storeUnlocks', JSON.stringify(unlockData));
-    if (unlockData[appId].monetag >= 5 && unlockData[appId].adsgram >= 5) { showToast("🎉 Project Unlocked!", true); } 
-    else { showToast(`Ad Watched! (${unlockData[appId][type]}/5)`); }
-    fetchCodeStore(); 
-}
-
-function openStorePreview(appId) { 
-    const rawCode = window.loadedCodes[appId] || ""; 
-    let parts = rawCode.split("|||ADMIN_CODE|||");
-    document.getElementById('previewFrame').srcdoc = parts[0] || "<h1>No code</h1>"; 
-    document.getElementById('previewModal').style.display = 'flex'; 
-    currentSessionEarned = 0.000;
-    document.getElementById('modalCoinText').innerText = currentSessionEarned.toFixed(3);
-    clearInterval(coinTimer);
-    coinTimer = setInterval(() => {
-        userBalance += 0.010; currentSessionEarned += 0.010;
-        document.getElementById('coinText').innerText = userBalance.toFixed(3);
-        document.getElementById('modalCoinText').innerText = currentSessionEarned.toFixed(3);
-        if(document.getElementById('profCoinBalance')) document.getElementById('profCoinBalance').innerText = userBalance.toFixed(3);
+function launchGame(id) {
+    const app = APP_DATA.find(a => a.id == id);
+    document.getElementById('gameIframe').srcdoc = app.ad_code.split('|||ADMIN_CODE|||')[0];
+    document.getElementById('gamePlayer').style.display = 'flex';
+    currentSessionEarned = 0;
+    gameTimer = setInterval(() => {
+        currentSessionEarned += 0.0089;
+        document.getElementById('sessionCoins').innerText = currentSessionEarned.toFixed(4);
     }, 1000);
 }
 
-function openStoreCode(appId) { 
-    const rawCode = window.loadedCodes[appId] || ""; 
-    let parts = rawCode.split("|||ADMIN_CODE|||");
-    activeUserCode = parts[0] || "No user code."; activeAdminCode = parts[1] || "No admin code.";
-    document.getElementById('userCodeBlock').innerText = activeUserCode; 
-    document.getElementById('adminCodeBlock').innerText = activeAdminCode; 
-    document.getElementById('codeModal').style.display = 'flex'; 
+function closeGame() {
+    clearInterval(gameTimer);
+    balance += currentSessionEarned; updateBalance();
+    document.getElementById('gameIframe').srcdoc = "";
+    document.getElementById('gamePlayer').style.display = 'none';
 }
 
-async function closeStoreModal(modalId) { 
-    document.getElementById(modalId).style.display = 'none'; 
-    if(modalId === 'previewModal') { 
-        document.getElementById('previewFrame').srcdoc = ""; clearInterval(coinTimer);
-        if (currentSessionEarned > 0) {
-            try { await sb.from('users').update({ balance: userBalance }).eq('uid', currentUser.id); showToast(`Earned ${currentSessionEarned.toFixed(3)} Cody!`, true); } catch(e) {}
-        }
-    } 
+function openDetail(id) {
+    const app = APP_DATA.find(a => a.id == id);
+    document.getElementById('detailTitle').innerText = app.title;
+    document.getElementById('detailImg').src = app.img;
+    document.getElementById('detailDesc').innerText = app.desc;
+    document.getElementById('mainBtn').onclick = () => window.open(app.link, '_blank');
+    document.getElementById('detailModal').style.display = 'flex';
 }
-
-function copySpecificCode(type) { 
-    const codeToCopy = type === 'user' ? activeUserCode : activeAdminCode;
-    navigator.clipboard.writeText(codeToCopy).then(() => showToast("Copied!", true));
-}
-
-// ================= FEED LOGIC =================
-function generatePostHTML(p, userObj) {
-    let u = userObj || { username: 'User', photo_url: '' }; 
-    const avatar = u.photo_url ? `<img src="${u.photo_url}">` : `<i class="fa-solid fa-user"></i>`;
-    let mediaHtml = '';
-    if(p.image_url) {
-        let isVideo = p.image_url.startsWith('data:video') || p.image_url.toLowerCase().endsWith('.mp4');
-        mediaHtml = isVideo ? `<video class="feed-media" controls preload="metadata"><source src="${p.image_url}"></video>` : `<img class="feed-media" src="${p.image_url}">`;
-    }
-    const safePId = String(p.id).replace(/'/g, "\\'"); 
-    const postComments = allComments.filter(c => c.post_id === p.id);
-    let commentsHTML = "";
-    postComments.forEach(c => {
-        const cu = allUsers.find(x => x.uid === c.uid) || {username: 'User'};
-        const cAvatar = cu.photo_url ? `<img src="${cu.photo_url}">` : '<i class="fa-solid fa-user"></i>';
-        commentsHTML += `<div class="comment-item ${c.text.includes('tagged-user') ? 'replies-container' : 'main-comment'}"><div class="tweet-avatar">${cAvatar}</div><div class="comment-body"><div class="comment-bubble"><b>${cu.username}</b> ${c.text}</div><div class="comment-actions-row"><span class="comment-like-btn" onclick="likeComment(this)"><i class="fa-regular fa-heart"></i> <b class="c-likes-count">0</b></span><span onclick="focusReplyInput('${safePId}', '${cu.username}')"><i class="fa-solid fa-reply"></i> Reply</span></div></div></div>`;
-    });
-    const myAvatar = userProfile && userProfile.photo_url ? `<img src="${userProfile.photo_url}">` : '<i class="fa-solid fa-user"></i>';
-    return `<div class="tweet-card" style="flex-direction: column;"><div style="display: flex; gap: 15px; width: 100%;"><div class="tweet-avatar">${avatar}</div><div class="tweet-content"><div class="tweet-header"><span class="name">${u.username}</span><span class="handle">@${u.username.toLowerCase()}</span></div><div class="tweet-text">${p.text}</div>${mediaHtml}<div class="tweet-actions"><div class="t-action-btn comment" onclick="toggleComment(this)"><i class="fa-regular fa-message"></i> <span class="count">${postComments.length}</span></div><div class="t-action-btn share"><i class="fa-solid fa-retweet"></i></div><div class="t-action-btn like" onclick="likePost(this, '${safePId}', ${p.likes||0})"><i class="fa-regular fa-heart"></i> <span>${p.likes||0}</span></div></div></div></div><div class="comment-box" id="cbox_${safePId}"><div class="comment-list">${commentsHTML}</div><div class="comment-input-wrapper"><div class="reply-indicator" id="replyInd_${safePId}"><span>Replying to <b id="replyTarget_${safePId}">@user</b></span><i class="fa-solid fa-xmark" onclick="cancelReply('${safePId}')"></i></div><div class="comment-input-row"><div class="tweet-avatar">${myAvatar}</div><div class="comment-input-box"><input class="comment-input" id="cInput_${safePId}" placeholder="Add a comment..." onkeydown="if(event.key==='Enter'){submitNewComment(this, '${safePId}')}"><button class="comment-submit-btn" onclick="submitNewComment(this.previousElementSibling, '${safePId}')"><i class="fa-solid fa-paper-plane"></i></button></div></div></div></div></div>`;
-}
-
-async function fetchPostsFeed() {
-    try {
-        const { data } = await sb.from('posts').select('*').order('created_at', {ascending: false});
-        const container = document.getElementById('postFeed');
-        if(!data || data.length === 0) { container.innerHTML = `<div class="empty-state"><h3>No posts yet</h3></div>`; return; }
-        container.innerHTML = data.map(p => generatePostHTML(p, allUsers.find(x => x.uid === p.uid))).join('');
-    } catch(e) {}
-}
-
-function toggleComment(b) { const box = b.closest(".tweet-card").querySelector(".comment-box"); box.style.display = box.style.display === "block" ? "none" : "block"; }
-function likeComment(btn) { btn.classList.toggle('liked'); btn.querySelector('i').className = btn.classList.contains('liked') ? 'fa-solid fa-heart' : 'fa-regular fa-heart'; }
-function focusReplyInput(postId, username) {
-    const input = document.getElementById('cInput_' + postId);
-    document.getElementById('replyInd_' + postId).style.display = 'flex';
-    document.getElementById('replyTarget_' + postId).innerText = '@' + username;
-    input.dataset.replyTo = username; input.focus();
-}
-function cancelReply(postId) { document.getElementById('replyInd_' + postId).style.display = 'none'; document.getElementById('cInput_' + postId).dataset.replyTo = ""; }
-
-async function submitNewComment(inputEl, postId) {
-    let textVal = inputEl.value.trim(); if(!textVal) return; inputEl.disabled = true;
-    let dbText = inputEl.dataset.replyTo ? `<span class="tagged-user">@${inputEl.dataset.replyTo}</span> ${textVal}` : textVal;
-    try {
-        await sb.from('comments').insert({ post_id: postId, uid: currentUser.id, text: dbText }); 
-        fetchPostsFeed(); // Refresh
-        inputEl.value = ""; cancelReply(postId);
-    } catch(e) { showToast("Error"); } inputEl.disabled = false;
-}
-
-async function likePost(btn, postId, currentLikes) { if(btn.classList.contains("liked")) return; btn.classList.add("liked"); btn.querySelector('i').className = "fa-solid fa-heart"; btn.querySelector('span').innerText = currentLikes + 1; await sb.from('posts').update({likes: currentLikes + 1}).eq('id', postId); }
-
-// ================= UTILS =================
-let toastTimeout;
-function showToast(msg, isSuccess = false) {
-    const toast = document.getElementById('toast'); 
-    document.getElementById('toastMsg').innerText = msg; 
-    toast.style.borderColor = isSuccess ? '#4ade80' : 'var(--border)'; 
-    toast.classList.add('show');
-    clearTimeout(toastTimeout); toastTimeout = setTimeout(() => toast.classList.remove('show'), 3000);
-}
-
-function openPage(id, el) { 
-    document.querySelectorAll(".page").forEach(p => p.classList.remove("active")); 
-    document.getElementById(id).classList.add("active"); 
-    document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active")); 
-    el.classList.add("active"); 
-    if (id === 'home') loadHomePage();
-    if (id === 'info') loadFeedPage();
-    if (id === 'profile') loadProfilePage();
+function closeDetail() { document.getElementById('detailModal').style.display = 'none'; }
+function updateBalance() {
+    document.getElementById('coinDisplay').innerText = balance.toFixed(4);
+    document.getElementById('profBalance').innerText = balance.toFixed(4);
 }
 </script>
-
 </body>
 </html>
