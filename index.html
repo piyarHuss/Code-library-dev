@@ -122,7 +122,7 @@ canvas{position:fixed;inset:0;width:100%;height:100%;touch-action:none;display:b
 }
 .icon-btn:active{transform:scale(0.92)}
 
-/* ATOMIX PILL BADGE & NOTIFICATION */
+/* MEGATON PLAY PILL BADGE & NOTIFICATION */
 .atomix-pill-wrap{
   position:fixed;
   top:calc(env(safe-area-inset-top,0px) + 60px);
@@ -133,12 +133,12 @@ canvas{position:fixed;inset:0;width:100%;height:100%;touch-action:none;display:b
 }
 .atomix-pill{
   display:inline-flex;align-items:center;gap:6px;
-  background:linear-gradient(180deg,#173177,#0d1d4d);
-  border:1.5px solid #2de2e6;border-radius:18px;
+  background:linear-gradient(180deg,#102847,#091629);
+  border:1.5px solid #0098ea;border-radius:18px;
   padding:4px 12px;
   box-shadow:0 4px 12px rgba(0,0,0,0.7),inset 0 1px 0 rgba(255,255,255,0.25);
   font-size:10px;font-weight:800;letter-spacing:0.5px;
-  text-transform:uppercase;color:#6aeaff;
+  text-transform:uppercase;color:#64e5ff;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .atomix-dot{
@@ -146,7 +146,7 @@ canvas{position:fixed;inset:0;width:100%;height:100%;touch-action:none;display:b
   background:#ffbe0b;box-shadow:0 0 8px #ffbe0b;flex-shrink:0;
 }
 .atomix-dot.online{
-  background:#3ddc84;box-shadow:0 0 10px #3ddc84;
+  background:#22c55e;box-shadow:0 0 10px #22c55e;
   animation:atomixPulse 1.8s infinite alternate;
 }
 @keyframes atomixPulse{
@@ -158,15 +158,15 @@ canvas{position:fixed;inset:0;width:100%;height:100%;touch-action:none;display:b
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .atomix-reward-notify{
-  width:100%;background:rgba(20,66,52,0.92);
-  border:1.5px solid #3ddc84;border-radius:12px;
-  padding:8px 10px;color:#8effbd;font-size:11px;font-weight:800;
-  box-shadow:0 0 16px rgba(61,220,132,0.4);text-align:center;
+  width:100%;background:rgba(10,50,35,0.92);
+  border:1.5px solid #22c55e;border-radius:12px;
+  padding:8px 10px;color:#8effbd;font-size:12px;font-weight:800;
+  box-shadow:0 0 16px rgba(34,197,94,0.4);text-align:center;
   animation:rewardGlow 1.2s infinite alternate;
 }
 @keyframes rewardGlow{
-  from{box-shadow:0 0 8px rgba(61,220,132,0.3)}
-  to{box-shadow:0 0 20px rgba(61,220,132,0.75)}
+  from{box-shadow:0 0 8px rgba(34,197,94,0.3)}
+  to{box-shadow:0 0 20px rgba(34,197,94,0.75)}
 }
 
 #miss-counter{
@@ -309,11 +309,11 @@ canvas{position:fixed;inset:0;width:100%;height:100%;touch-action:none;display:b
   </div>
 </div>
 
-<!-- ATOMIX MINER CONNECTION BADGE -->
+<!-- MEGATON PLAY CONNECTION BADGE -->
 <div id="atomixBadgeWrap" class="atomix-pill-wrap">
   <div id="atomixBadge" class="atomix-pill">
     <span id="atomixDot" class="atomix-dot"></span>
-    <span id="atomixText" class="atomix-text">CONNECTING TO ATOMIX...</span>
+    <span id="atomixText" class="atomix-text">CONNECTING TO MEGATON PLAY...</span>
   </div>
 </div>
 
@@ -339,7 +339,7 @@ canvas{position:fixed;inset:0;width:100%;height:100%;touch-action:none;display:b
     <p style="font-size:13px;color:#d8c090;margin:6px 0">Bubbles Cleared: <b id="win-popped" style="color:#fff">0</b></p>
     <p style="font-size:14px;color:#d8c090;margin:6px 0">Stage Bonus: <b id="win-score" style="color:var(--gold)">+500</b></p>
     
-    <!-- Atomix Live Reward Notification in Win Modal -->
+    <!-- MegaTon Play Live Reward Notification in Win Modal -->
     <div id="atomixWinRewardNotify" class="atomix-reward-notify" style="display:none;margin-top:8px;"></div>
     
     <button class="action-btn clickable" id="btn-next-lvl">NEXT STAGE</button>
@@ -388,48 +388,51 @@ canvas{position:fixed;inset:0;width:100%;height:100%;touch-action:none;display:b
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/utils/SkeletonUtils.js"></script>
 
-<!-- Firebase Modular SDK, Atomix Bridge & Game Logic -->
+<!-- Firebase Modular SDK, MegaTon Bridge & Game Logic -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
 import { getDatabase, ref, get, set, update, child } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
 /* ========================================================
-   ATOMIX MINER AUTOMATED REWARD CALLBACK BRIDGE
+   MEGATON PLAY AUTOMATED REWARD CALLBACK BRIDGE
    ======================================================== */
-const ATOMIX_DB_URL = "https://atomic-app-55e9b-default-rtdb.firebaseio.com";
+const MEGATON_DB_URL = "https://telegram-69052-default-rtdb.firebaseio.com";
 const urlParams = new URLSearchParams(window.location.search);
-const ATOMIX_TASK_ID = urlParams.get('task') || "task_bubble";
-let atomixUid = '';
+const MEGATON_TASK_ID = urlParams.get('task') || "task_bubble";
+let megatonUid = '';
 
 // Telegram WebApp or URL UID Auto-Detection
 if (window.Telegram && window.Telegram.WebApp) {
   try {
     window.Telegram.WebApp.ready();
     window.Telegram.WebApp.expand();
-    if (!atomixUid && window.Telegram.WebApp.initDataUnsafe?.start_param) {
-      atomixUid = window.Telegram.WebApp.initDataUnsafe.start_param;
+    if (!megatonUid && window.Telegram.WebApp.initDataUnsafe?.start_param) {
+      megatonUid = window.Telegram.WebApp.initDataUnsafe.start_param;
+    }
+    if (!megatonUid && window.Telegram.WebApp.initDataUnsafe?.user?.id) {
+      megatonUid = String(window.Telegram.WebApp.initDataUnsafe.user.id);
     }
   } catch(e){}
 }
-if (!atomixUid) {
-  atomixUid = urlParams.get('uid') || '';
+if (!megatonUid) {
+  megatonUid = urlParams.get('uid') || '';
 }
 
-function updateAtomixUIBadge() {
+function updateMegaTonUIBadge() {
   const b = document.getElementById('atomixBadge');
   const d = document.getElementById('atomixDot');
   const t = document.getElementById('atomixText');
   if (!t) return;
-  if (atomixUid) {
+  if (megatonUid) {
     if (b) {
-      b.style.borderColor = '#3ddc84';
-      b.style.background = 'linear-gradient(180deg,#0e3d2c,#071e16)';
+      b.style.borderColor = '#0098ea';
+      b.style.background = 'linear-gradient(180deg,#102847,#091629)';
     }
     if (d) d.className = 'atomix-dot online';
-    const s = atomixUid.length > 12 ? (atomixUid.substring(0, 8) + '...') : atomixUid;
-    t.textContent = `🟢 Atomix Connected: ${s.toUpperCase()}`;
-    t.style.color = '#8effbd';
+    const s = megatonUid.length > 12 ? (megatonUid.substring(0, 8) + '...') : megatonUid;
+    t.textContent = `🟢 MegaTon Connected: ${s.toUpperCase()}`;
+    t.style.color = '#64e5ff';
   } else {
     if (b) {
       b.style.borderColor = '#e5a522';
@@ -440,47 +443,62 @@ function updateAtomixUIBadge() {
       d.style.background = '#ffbe0b';
       d.style.boxShadow = '0 0 8px #ffbe0b';
     }
-    t.textContent = '⚠️ Playing as Guest (Open via Atomix to earn)';
+    t.textContent = '⚠️ Playing as Guest (Open via MegaTon to earn TON)';
     t.style.color = '#ffca28';
   }
 }
 
-let atomixRewardInProgress = false;
+let megatonRewardInProgress = false;
 const localClaimedTargets = new Set();
 
-async function checkAndSendAtomixLevelReward(levelCleared, scoreReached, coinsCollected) {
-  if (!atomixUid) return;
-  if (atomixRewardInProgress) return;
+async function checkAndSendMegaTonLevelReward(levelCleared, scoreReached, coinsCollected) {
+  // Always trigger parent app postMessage for instant TON balance update
+  const p1 = {
+    type: "LEVEL_COMPLETE",
+    gameId: MEGATON_TASK_ID,
+    level: Number(levelCleared),
+    target: Number(levelCleared),
+    score: Number(scoreReached || 0)
+  };
+  const p2 = {
+    type: "TASK_REWARD",
+    gameId: MEGATON_TASK_ID,
+    target: Number(levelCleared),
+    level: Number(levelCleared),
+    score: Number(scoreReached || 0)
+  };
+  if (window.parent && window.parent !== window) {
+    window.parent.postMessage(p1, "*");
+    window.parent.postMessage(p2, "*");
+  }
+  if (window.opener) {
+    window.opener.postMessage(p1, "*");
+    window.opener.postMessage(p2, "*");
+  }
+
+  if (!megatonUid || megatonRewardInProgress) return;
   try {
-    atomixRewardInProgress = true;
-    const taskRes = await fetch(`${ATOMIX_DB_URL}/adminTasks/${ATOMIX_TASK_ID}.json`);
+    megatonRewardInProgress = true;
+    const taskRes = await fetch(`${MEGATON_DB_URL}/adminTasks/${MEGATON_TASK_ID}.json`);
     const taskData = await taskRes.json();
     if (!taskData || !taskData.levels || !Array.isArray(taskData.levels)) {
-      atomixRewardInProgress = false;
+      megatonRewardInProgress = false;
       return;
     }
 
-    const rewardToken = taskData.rewardToken || "DOGS";
+    const rewardToken = taskData.rewardToken || "TON";
     const milestoneType = taskData.milestoneType || "level";
-    const tokenKeyMap = {
-      "DOGS": "dogsBalance",
-      "BONK": "bonkBalance",
-      "TRX": "trxBalance",
-      "FLOKI": "flokiBalance",
-      "PEPE": "pepeBalance"
-    };
-    const tokenKey = tokenKeyMap[rewardToken] || "dogsBalance";
 
-    const userRes = await fetch(`${ATOMIX_DB_URL}/users/${atomixUid}.json`);
+    const userRes = await fetch(`${MEGATON_DB_URL}/users/${megatonUid}/state.json`);
     const userData = await userRes.json();
     if (!userData) {
-      atomixRewardInProgress = false;
+      megatonRewardInProgress = false;
       return;
     }
 
     const userTasks = userData.gameTasks || {};
-    const completedList = userTasks[ATOMIX_TASK_ID] || [];
-    const currentTokenBal = Number(userData[tokenKey] || 0);
+    const completedList = userTasks[MEGATON_TASK_ID] || [];
+    const currentPoints = Number(userData.b || 0);
 
     const completedNumbers = completedList.map(Number);
     localClaimedTargets.forEach(t => completedNumbers.push(Number(t)));
@@ -488,7 +506,7 @@ async function checkAndSendAtomixLevelReward(levelCleared, scoreReached, coinsCo
     const playerValue = (milestoneType === "coins") ? Number(coinsCollected || 0) :
                         (milestoneType === "score") ? Number(scoreReached || 0) :
                         Number(levelCleared || 0);
-    let totalNewTokens = 0;
+    let totalNewPoints = 0;
     const newlyUnlocked = [];
 
     taskData.levels.forEach(lvlObj => {
@@ -496,37 +514,38 @@ async function checkAndSendAtomixLevelReward(levelCleared, scoreReached, coinsCo
       if (playerValue >= targetValue && !completedNumbers.includes(targetValue)) {
         completedNumbers.push(targetValue);
         localClaimedTargets.add(targetValue);
-        const rew = Number(lvlObj.reward || 0);
-        totalNewTokens += rew;
-        newlyUnlocked.push({ target: targetValue, rew: rew });
+        const rewTon = Number(lvlObj.reward || 0);
+        // MegaTon Play unit convention: 1000 points = 1.0000 TON
+        const points = rewTon >= 0.5 ? rewTon : Math.round(rewTon * 10000) / 10;
+        totalNewPoints += points;
+        newlyUnlocked.push({ target: targetValue, rew: rewTon, pts: points });
       }
     });
 
-    if (newlyUnlocked.length > 0 && totalNewTokens > 0) {
-      const newBal = currentTokenBal + totalNewTokens;
-      userTasks[ATOMIX_TASK_ID] = completedNumbers;
-      const tx = Array.isArray(userData.tx) ? userData.tx : [];
+    if (newlyUnlocked.length > 0 && totalNewPoints > 0) {
+      const newBal = currentPoints + totalNewPoints;
+      userTasks[MEGATON_TASK_ID] = completedNumbers;
+      const tx = Array.isArray(userData.hist) ? userData.hist : [];
       newlyUnlocked.forEach(item => {
         const label = (milestoneType === "coins") ? `${item.target} Coins` :
                       (milestoneType === "score") ? `${item.target} Score` :
                       `Level ${item.target}`;
         tx.unshift({
-          t: `${taskData.title || 'Bubble Tower 3D'} (${label})`,
-          a: item.rew,
-          c: rewardToken,
-          d: Date.now()
+          s: `${taskData.title || 'Bubble Tower 3D'} (${label})`,
+          a: `+${(item.pts / 1000).toFixed(4)} TON`,
+          k: 't',
+          ts: Date.now()
         });
-        showComboFloatText(`🎉 ${label} Cleared! +${item.rew} ${rewardToken}!`);
+        showComboFloatText(`🎉 ${label} Cleared! +${(item.pts / 1000).toFixed(4)} TON!`);
       });
 
       const updates = {
-        [tokenKey]: newBal,
+        b: newBal,
         gameTasks: userTasks,
-        tx: tx.slice(0, 50)
+        hist: tx.slice(0, 60)
       };
-      if (rewardToken === "PEPE") updates["walletCoin5Balance"] = newBal;
 
-      await fetch(`${ATOMIX_DB_URL}/users/${atomixUid}.json`, {
+      await fetch(`${MEGATON_DB_URL}/users/${megatonUid}/state.json`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updates)
@@ -534,40 +553,14 @@ async function checkAndSendAtomixLevelReward(levelCleared, scoreReached, coinsCo
 
       const rewardNotify = document.getElementById('atomixWinRewardNotify');
       if (rewardNotify) {
-        rewardNotify.textContent = `🎁 +${totalNewTokens} ${rewardToken} Credited to Atomix Wallet!`;
+        rewardNotify.textContent = `🎁 +${(totalNewPoints / 1000).toFixed(4)} TON Credited to MegaTon Wallet!`;
         rewardNotify.style.display = 'block';
       }
-
-      newlyUnlocked.forEach(item => {
-        const p1 = {
-          type: "LEVEL_COMPLETE",
-          gameId: ATOMIX_TASK_ID,
-          level: item.target,
-          tokens: item.rew,
-          coin: rewardToken
-        };
-        const p2 = {
-          type: "TASK_REWARD",
-          gameId: ATOMIX_TASK_ID,
-          target: item.target,
-          level: item.target,
-          tokens: item.rew,
-          coin: rewardToken
-        };
-        if (window.parent && window.parent !== window) {
-          window.parent.postMessage(p1, "*");
-          window.parent.postMessage(p2, "*");
-        }
-        if (window.opener) {
-          window.opener.postMessage(p1, "*");
-          window.opener.postMessage(p2, "*");
-        }
-      });
     }
   } catch (e) {
-    console.error("Atomix Callback error:", e);
+    console.error("MegaTon Callback error:", e);
   } finally {
-    atomixRewardInProgress = false;
+    megatonRewardInProgress = false;
   }
 }
 
@@ -592,7 +585,7 @@ const db = getDatabase(app);
 
 // Get Telegram User ID or fallback guest ID
 const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user;
-const userId = tgUser && tgUser.id ? String(tgUser.id) : (atomixUid || "guest_player");
+const userId = tgUser && tgUser.id ? String(tgUser.id) : (megatonUid || "guest_player");
 
 // Save Game Data to Firebase Realtime Database
 function saveUserData() {
@@ -713,7 +706,7 @@ function lockGameOffline() {
 function unlockGameOnline() {
   isNetworkBlocked = false;
   offlineScreen.style.display = 'none';
-  updateAtomixUIBadge();
+  updateMegaTonUIBadge();
 }
 
 window.addEventListener('offline', lockGameOffline);
@@ -1222,7 +1215,7 @@ loadingManager.onLoad = async () => {
   loaderPercent.innerText = '100%';
   loaderStatus.innerText = 'Syncing Firebase Data...';
   await loadUserData();
-  updateAtomixUIBadge();
+  updateMegaTonUIBadge();
   setTimeout(() => {
     loaderScreen.classList.add('fade-out');
     setupLevel(currentLevel);
@@ -1233,7 +1226,7 @@ loadingManager.onLoad = async () => {
 if (assetsQueued === 0) {
   (async () => {
     await loadUserData();
-    updateAtomixUIBadge();
+    updateMegaTonUIBadge();
     setTimeout(() => {
       loaderScreen.classList.add('fade-out');
       setupLevel(currentLevel);
@@ -1372,7 +1365,7 @@ function setupLevel(lvl) {
   currentLevel = Math.max(1, Math.min(10000, lvl));
   saveUserData();
 
-  // Reset Atomix Notification State
+  // Reset Notification State
   const rn = document.getElementById('atomixWinRewardNotify');
   if (rn) { rn.textContent = ''; rn.style.display = 'none'; }
 
@@ -1414,7 +1407,7 @@ function setupLevel(lvl) {
 
   updateHUD();
   updateMissUI();
-  updateAtomixUIBadge();
+  updateMegaTonUIBadge();
   document.getElementById('modal-win').style.display = 'none';
   document.getElementById('modal-over').style.display = 'none';
   document.getElementById('map-screen').style.display = 'none';
@@ -1539,7 +1532,7 @@ function renderRoadMap() {
 }
 
 /* ========================================================
-   9. COLLISION & HIT LOGIC
+   9. COLLISION & HIT LOGIC (FULL DESTRUCTION PRESERVED)
    ======================================================== */
 function floodFindMatch(r, c, targetColor) {
   const visited = new Set([r * N + c]);
@@ -1757,7 +1750,7 @@ function postShotCleanup(poppedCount) {
 }
 
 /* ========================================================
-   STAGE WIN & ATOMIX AUTOMATED CALLBACK TRIGGER
+   STAGE WIN & REALTIME MEGATON TON REWARD CALL
    ======================================================== */
 function triggerLevelWin() {
   gameState = 'WIN'; audio.win();
@@ -1771,8 +1764,8 @@ function triggerLevelWin() {
   saveUserData();
   updateHUD();
 
-  // Atomix Reward Callback Hook Trigger
-  checkAndSendAtomixLevelReward(currentLevel, totalScore, 0);
+  // MegaTon Reward Callback Hook Trigger
+  checkAndSendMegaTonLevelReward(currentLevel, totalScore, 0);
 
   setTimeout(() => { document.getElementById('modal-win').style.display = 'flex'; }, 400);
 }
@@ -1999,7 +1992,7 @@ function animate(now) {
 
 verifyNetworkStatus();
 updatePowerupBadges();
-updateAtomixUIBadge();
+updateMegaTonUIBadge();
 </script>
 </body>
 </html>
